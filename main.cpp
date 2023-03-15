@@ -50,9 +50,7 @@ class User {
     std::vector<Card> carduri = {}; 
 
 public:
-    User()=default;
-
-    User(const std::string& nume_, std::string cnp_, std::string iban_, std::string email_, std::string numar_telefon_) : nume(nume_), cnp(cnp_), email(email_), numar_telefon(numar_telefon_) {
+    User(const std::string& nume_, const std::string cnp_, const std::string iban_, const std::string email_, const std::string numar_telefon_) : nume(nume_), cnp(cnp_), email(email_), numar_telefon(numar_telefon_) {
         std::cout << "User constructor\n" << *this;
     }
 
@@ -109,7 +107,7 @@ class AppAccount {
     std::string password;
 
 public:
-    AppAccount(User user_, std::string password_) : user(user_), password(password_) { 
+    AppAccount(const User user_, const std::string password_) : user(user_), password(password_) { 
         std::cout << "AppAccount constructor\n" << *this << '\n';
     }
 
@@ -138,10 +136,7 @@ class Tranzactie {
     bool realizata;
 
 public:
-    Tranzactie(User user1_, User user2_, float value_, Currency currency_, bool realizata_) : user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
-        std::cout << "Tranzactie constructor\n" << *this << '\n';
-    }
-    Tranzactie(User user1_, User user2_, float value_) : user1(user1_), user2(user2_), value(value_) {
+    Tranzactie(const User user1_, const User user2_, float value_, const Currency currency_, bool realizata_) : user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
         std::cout << "Tranzactie constructor\n" << *this << '\n';
     }
 
