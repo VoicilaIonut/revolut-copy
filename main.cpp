@@ -17,7 +17,7 @@ class Card {
     std::string cod, data_expirare, cvv; // maybe import a date type
 
 public:
-    Card(const std::string cod, const std::string data_expirare_, const std::string cvv_): cod(cod), data_expirare(data_expirare_), cvv(cvv_) {
+    Card(const std::string& cod, const std::string& data_expirare_, const std::string& cvv_): cod(cod), data_expirare(data_expirare_), cvv(cvv_) {
         std::cout << *this << '\n';
     }
 
@@ -45,7 +45,7 @@ class User {
     std::vector<Card> carduri = {};
 
 public:
-    User(const std::string& nume_, const std::string cnp_, const std::string iban_, const std::string email_, const std::string numar_telefon_): 
+    User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numar_telefon_): 
     nume(nume_), cnp(cnp_), iban(iban_), email(email_), numar_telefon(numar_telefon_) {
         std::cout << "User constructor\n" << *this;
     }
@@ -105,7 +105,7 @@ public:
 //     std::string password;
 
 // public:
-//     AppAccount(const User user_, const std::string password_): user(user_), password(password_) {
+//     AppAccount(const User& user_, const std::string& password_): user(user_), password(password_) {
 //         std::cout << "AppAccount constructor\n" << *this << '\n';
 //     }
 
@@ -134,7 +134,7 @@ public:
 //     bool realizata;
 
 // public:
-//     Tranzactie(const User user1_, const User user2_, float value_, const Currency currency_, bool realizata_): user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
+//     Tranzactie(const User& user1_, const User& user2_, float value_, const Currency& currency_, bool realizata_): user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
 //         std::cout << "Tranzactie constructor\n" << *this << '\n';
 //     }
 
