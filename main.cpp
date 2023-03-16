@@ -100,66 +100,66 @@ public:
     */
 };
 
-// class AppAccount {
-//     User user;
-//     std::string password;
+class AppAccount {
+    User user;
+    std::string password;
 
-// public:
-//     AppAccount(const User& user_, const std::string& password_): user(user_), password(password_) {
-//         std::cout << "AppAccount constructor\n" << *this << '\n';
-//     }
+public:
+    AppAccount(const User& user_, const std::string& password_): user(user_), password(password_) {
+        std::cout << "AppAccount constructor\n" << *this << '\n';
+    }
 
-//     friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
-//         os << "User account: " << appAccount.user << '\n';
-//         os << "Encrypted password: " << appAccount.password << '\n';
-//         return os;
-//     }
+    friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
+        os << "User account: " << appAccount.user << '\n';
+        os << "Encrypted password: " << appAccount.password << '\n';
+        return os;
+    }
 
-//     AppAccount& operator=(const AppAccount& other) {
-//         std::cout << "operator= copiere " << *this << "\n";
-//         user = other.user;
-//         password = other.password;
-//         return *this;
-//     }
+    AppAccount& operator=(const AppAccount& other) {
+        std::cout << "operator= copiere " << *this << "\n";
+        user = other.user;
+        password = other.password;
+        return *this;
+    }
 
-//     ~AppAccount() {
-//         std::cout << "Destroing AppAccount" << *this << "\n";
-//     }
-// };
+    ~AppAccount() {
+        std::cout << "Destroing AppAccount" << *this << "\n";
+    }
+};
 
-// class Tranzactie {
-//     User user1, user2; // the withdraws are made between the company account and the user account
-//     float value;
-//     Currency currency;
-//     bool realizata;
+class Tranzactie {
+    User user1, user2; // the withdraws are made between the company account and the user account
+    float value;
+    Currency currency;
+    bool realizata;
 
-// public:
-//     Tranzactie(const User& user1_, const User& user2_, float value_, const Currency& currency_, bool realizata_): user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
-//         std::cout << "Tranzactie constructor\n" << *this << '\n';
-//     }
+public:
+    Tranzactie(const User& user1_, const User& user2_, float value_, const Currency& currency_, bool realizata_): user1(user1_), user2(user2_), value(value_), currency(currency_), realizata(realizata_) {
+        std::cout << "Tranzactie constructor\n" << *this << '\n';
+    }
 
-//     friend std::ostream& operator<<(std::ostream& os, const Tranzactie& tranzactie) {
-//         os << "User1: " << tranzactie.user1 << "\nUser2: " << tranzactie.user2 << '\n';
-//         os << "Value: " << tranzactie.value << '\n';
-//         os << "Currency: " << tranzactie.currency << '\n';
-//         os << "Realizata: " << tranzactie.realizata << '\n';
-//         return os;
-//     }
+    friend std::ostream& operator<<(std::ostream& os, const Tranzactie& tranzactie) {
+        os << "User1: " << tranzactie.user1 << "\nUser2: " << tranzactie.user2 << '\n';
+        os << "Value: " << tranzactie.value << '\n';
+        os << "Currency: " << tranzactie.currency << '\n';
+        os << "Realizata: " << tranzactie.realizata << '\n';
+        return os;
+    }
 
-//     Tranzactie& operator=(const Tranzactie& tranzactie) {
-//         std::cout << "operator= copiere Card" << *this << "\n";
-//         user1 = tranzactie.user1;
-//         user2 = tranzactie.user2;
-//         value = tranzactie.value;
-//         currency = tranzactie.currency;
-//         realizata = tranzactie.realizata;
-//         return *this;
-//     }
+    Tranzactie& operator=(const Tranzactie& tranzactie) {
+        std::cout << "operator= copiere Card" << *this << "\n";
+        user1 = tranzactie.user1;
+        user2 = tranzactie.user2;
+        value = tranzactie.value;
+        currency = tranzactie.currency;
+        realizata = tranzactie.realizata;
+        return *this;
+    }
 
-//     ~Tranzactie() {
-//         std::cout << "Destroing Tranzactie" << *this << "\n";
-//     }
-// };
+    ~Tranzactie() {
+        std::cout << "Destroing Tranzactie" << *this << "\n";
+    }
+};
 
 
 std::unordered_map<std::string, std::string> creareDateUser() {
@@ -184,11 +184,11 @@ int main() {
     User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numar_telefon"]);
     std::cout << "test_user: " << test_user << '\n';
 
-    // AppAccount app_account(test_user, "1234");
-    // std::cout << "AppAccount: " << app_account << '\n';
+    AppAccount app_account(test_user, "1234");
+    std::cout << "AppAccount: " << app_account << '\n';
 
-    // Tranzactie test_tranzactie(test_user, test_user, float(12.1), RON, true);
-    // std::cout << "test_tranzactie: " << test_tranzactie << '\n';
+    Tranzactie test_tranzactie(test_user, test_user, float(12.1), RON, true);
+    std::cout << "test_tranzactie: " << test_tranzactie << '\n';
 
     return 0;
 }
