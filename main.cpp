@@ -18,7 +18,11 @@ class Card {
 
 public:
     Card(const std::string& cod, const std::string& data_expirare_, const std::string& cvv_): cod(cod), data_expirare(data_expirare_), cvv(cvv_) {
-        std::cout << *this << '\n';
+        std::cout << "Const " <<  *this << '\n';
+    }
+
+    Card(const Card& other): cod(other.cod), data_expirare(other.data_expirare), cvv(other.cvv) {
+        std::cout << "Constr de copiere" << *this << "\n";
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Card& card) {
@@ -27,12 +31,13 @@ public:
     }
 
     Card& operator=(const Card& other) {
-        std::cout << "operator= copiere Card" << *this << "\n";
+        std::cout << "operator= " << *this << "\n";
         cod = other.cod;
         data_expirare = other.data_expirare;
         cvv = other.cvv;
         return *this;
     }
+
     ~Card() {
         std::cout << "Destroing card" << *this << "\n";
     }
@@ -40,14 +45,18 @@ public:
 };
 
 class User {
-    std::string nume, cnp, iban, email, numar_telefon;
+    std::string nume, cnp, iban, email, numarTelefon;
     std::unordered_map<Currency, float> currencyAccount = {};
     std::vector<Card> carduri = {};
 
 public:
-    User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numar_telefon_): 
-    nume(nume_), cnp(cnp_), iban(iban_), email(email_), numar_telefon(numar_telefon_) {
+    User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numarTelefon): 
+    nume(nume_), cnp(cnp_), iban(iban_), email(email_), numarTelefon(numarTelefon) {
         std::cout << "User constructor\n" << *this;
+    }
+
+    User(const User& other) : nume(other.nume), cnp(other.cnp), iban(other.iban), email(other.email), numarTelefon(other.numarTelefon), currencyAccount(other.currencyAccount), carduri(other.carduri) {
+        std::cout << "Constr de copiere" << *this << "\n";
     }
 
     friend std::ostream& operator<<(std::ostream& os, const User& user) {
@@ -55,7 +64,7 @@ public:
         os << "User cnp: " << user.cnp << '\n';
         os << "User iban: " << user.iban << '\n';
         os << "User email: " << user.email << '\n';
-        os << "User numar telefon: " << user.numar_telefon << '\n';
+        os << "User numar telefon: " << user.numarTelefon << '\n';
         if (user.currencyAccount.empty()) {
             os << "User has no currency accounts\n";
         }
@@ -76,12 +85,12 @@ public:
     }
 
     User& operator=(const User& other) {
-        std::cout << "operator= copiere " << *this << "\n";
+        std::cout << "operator= " << *this << "\n";
         nume = other.nume;
         cnp = other.cnp;
         iban = other.iban;
         email = other.email;
-        numar_telefon = other.numar_telefon;
+        numarTelefon = other.numarTelefon;
         currencyAccount = other.currencyAccount;
         carduri = other.carduri;
         return *this;
@@ -109,6 +118,10 @@ public:
         std::cout << "AppAccount constructor\n" << *this << '\n';
     }
 
+    AppAccount(const AppAccount& other): user(other.user), password(other.password) {
+        std::cout << "Constr de copiere" << *this << "\n";
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
         os << "User account: " << appAccount.user << '\n';
         os << "Encrypted password: " << appAccount.password << '\n';
@@ -116,7 +129,7 @@ public:
     }
 
     AppAccount& operator=(const AppAccount& other) {
-        std::cout << "operator= copiere " << *this << "\n";
+        std::cout << "operator=  " << *this << "\n";
         user = other.user;
         password = other.password;
         return *this;
@@ -138,6 +151,10 @@ public:
         std::cout << "Tranzactie constructor\n" << *this << '\n';
     }
 
+    Tranzactie(const Tranzactie& other) : user1(other.user1), user2(other.user2), value(other.value), currency(other.currency), realizata(other.realizata) {
+        std::cout << "Constr de copiere" << *this << "\n";
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Tranzactie& tranzactie) {
         os << "User1: " << tranzactie.user1 << "\nUser2: " << tranzactie.user2 << '\n';
         os << "Value: " << tranzactie.value << '\n';
@@ -147,7 +164,7 @@ public:
     }
 
     Tranzactie& operator=(const Tranzactie& tranzactie) {
-        std::cout << "operator= copiere Card" << *this << "\n";
+        std::cout << "operator= " << *this << "\n";
         user1 = tranzactie.user1;
         user2 = tranzactie.user2;
         value = tranzactie.value;
@@ -168,7 +185,7 @@ std::unordered_map<std::string, std::string> creareDateUser() {
     dateUser["cnp"] = "5020927000000";
     dateUser["iban"] = "42069";
     dateUser["email"] = "test@example";
-    dateUser["numar_telefon"] = "0725293000";
+    dateUser["numarTelefon"] = "0725293000";
     return dateUser;
 }
 
@@ -181,7 +198,7 @@ int main() {
     Card test_card("1234 56789", "27/09/1900", "420");
     std::cout << test_card << '\n';
 
-    User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numar_telefon"]);
+    User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numarTelefon"]);
     std::cout << "test_user: " << test_user << '\n';
 
     AppAccount app_account(test_user, "1234");
