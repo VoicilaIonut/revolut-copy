@@ -58,12 +58,41 @@ public:
         std::cout << "Destroing card" << *this << "\n";
     }
 
+    bool checkCod(const std::string& codTry) {
+        if (cod == codTry) {
+            return true;
+        }
+        return false;
+    }
+
+    bool checkDataExpirare(const std::string& dataExpirareTry) {
+        if (dataExpirare == dataExpirareTry) {
+            return true;
+        }
+        return false;
+    }
+
+    bool checkCvv(const std::string& cvvTry) {
+        if (cvv == cvvTry) {
+            return true;
+        }
+        return false;
+    }
+    const std::string getCod() {
+        return cod;
+    }
+    const std::string getDataExpirare() {
+        return dataExpirare;
+    }
+    const std::string getCvv() {
+        return cvv;
+    }
 };
 
 class User {
     std::string nume, cnp, iban, email, numarTelefon;
     std::unordered_map<Currency, float> currencyAccount = {};
-    protected: std::vector<Card> carduri = {};
+    std::vector<Card> carduri = {};
 
     bool haveCurrency(const Currency& currency) {
         if (currencyAccount.find(currency) != currencyAccount.end()) {
@@ -84,7 +113,16 @@ class User {
         }
         return false;
     }
-    
+
+    bool haveCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv) { 
+        for (Card& card : carduri) {
+            if (card.checkCod(cod) &&  card.checkDataExpirare(dataExpirare) && card.checkCvv(cvv)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 public:
     User()=default;
     User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numarTelefon):
@@ -136,6 +174,13 @@ public:
     ~User() {
         std::cout << "Destroing User" << *this << "\n" << *this;
     }
+    const std::vector<Card> getCardsWithCnp(std::string cnpTry) {
+        if (checkCnp(cnpTry)) {
+            return carduri;
+        }
+        return {};
+    }
+
 
     void addFunds(float amount, const Currency& currency) {
         if (haveCurrency(currency)) {
@@ -171,10 +216,17 @@ public:
         return false;
     }
 
+    bool payWithCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv, float amount, const Currency& currency) { 
+        if (haveCard(cod, dataExpirare, cvv) && haveAmountOfCurrency(amount, currency)) {
+            currencyAccount[currency] -= amount;
+            return true;
+        }
+        return false;
+    }
+
     Tranzactie tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency);
     /*
     TODO add functions for:
-    adaugare card
     plataCard
     */
 };
@@ -308,14 +360,15 @@ int main() {
     std::unordered_map<std::string, std::string> dateUser = creareDateUser();
     User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numarTelefon"]);
 
-    test_user.addFunds(1002, RON);
+    test_user.addFunds(1003, RON);
     test_user.withdrawal(1, RON);
     test_user.exchange(1, RON, USD);
     test_user.tryToAddNewCardWithCnp(dateUser["cnp"]);
 
-    std::cout<<test_user << '\n';
-
+    std::vector<Card> carduri_test_user = test_user.getCardsWithCnp(dateUser["cnp"]);
+    test_user.payWithCard(carduri_test_user.back().getCod(), carduri_test_user.back().getDataExpirare(), carduri_test_user.back().getCvv(), 1, RON);
     tranzactii.push_back(test_user.tryToMakeTransaction(test_user, 1000, RON));
+    users.push_back(test_user);
     // for (auto x : tranzactii) {
     //     std::cout << x << '\n';
     // }
