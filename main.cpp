@@ -16,7 +16,7 @@ enum Currency {
 class Tranzactie;
 class Card {
     std::string cod, dataExpirare, cvv; // maybe import a date type
-    
+
     const std::string generateCod() {
         std::string codGenerated = "420 124 125 126"; // TODO: Add a random function to generate the cod.
         return codGenerated;
@@ -114,9 +114,9 @@ class User {
         return false;
     }
 
-    bool haveCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv) { 
+    bool haveCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv) {
         for (Card& card : carduri) {
-            if (card.checkCod(cod) &&  card.checkDataExpirare(dataExpirare) && card.checkCvv(cvv)) {
+            if (card.checkCod(cod) && card.checkDataExpirare(dataExpirare) && card.checkCvv(cvv)) {
                 return true;
             }
         }
@@ -124,7 +124,7 @@ class User {
     }
 
 public:
-    User()=default;
+    User() = default;
     User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numarTelefon):
         nume(nume_), cnp(cnp_), iban(iban_), email(email_), numarTelefon(numarTelefon) {
         std::cout << "User constructor\n" << *this;
@@ -174,7 +174,8 @@ public:
     ~User() {
         std::cout << "Destroing User" << *this << "\n" << *this;
     }
-    const std::vector<Card> getCardsWithCnp(std::string cnpTry) {
+
+    const std::vector<Card> getCardsWithCnp(const std::string& cnpTry) {
         if (checkCnp(cnpTry)) {
             return carduri;
         }
@@ -216,7 +217,7 @@ public:
         return false;
     }
 
-    bool payWithCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv, float amount, const Currency& currency) { 
+    bool payWithCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv, float amount, const Currency& currency) {
         if (haveCard(cod, dataExpirare, cvv) && haveAmountOfCurrency(amount, currency)) {
             currencyAccount[currency] -= amount;
             return true;
@@ -225,10 +226,6 @@ public:
     }
 
     Tranzactie tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency);
-    /*
-    TODO add functions for:
-    plataCard
-    */
 };
 
 // Tema2
@@ -291,7 +288,7 @@ public:
 
 // the withdraws are made between the company account and the user account
 class Tranzactie {
-    std::string ibanSender, ibanRecipient; 
+    std::string ibanSender, ibanRecipient;
     float value;
     Currency currency;
     bool realizata;
@@ -331,13 +328,13 @@ public:
 
 
 Tranzactie User::tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency) {
-        bool realizata = haveAmountOfCurrency(amount, currency);
-        if (realizata) {
-            currencyAccount[currency] -= amount;
-            recipientUser.addFunds(amount, currency);
-        }
-        return Tranzactie(iban, recipientUser.iban, amount, currency, realizata);
+    bool realizata = haveAmountOfCurrency(amount, currency);
+    if (realizata) {
+        currencyAccount[currency] -= amount;
+        recipientUser.addFunds(amount, currency);
     }
+    return Tranzactie(iban, recipientUser.iban, amount, currency, realizata);
+}
 
 
 std::unordered_map<std::string, std::string> creareDateUser() {
