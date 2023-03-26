@@ -15,41 +15,41 @@ enum Currency {
 
 class Tranzactie;
 class Card {
-    std::string cod, data_expirare, cvv; // maybe import a date type
-    
+    std::string cod, dataExpirare, cvv; // maybe import a date type
+
     const std::string generateCod() {
-        std::string cod = "420 124 125 126"; // TODO: Add a random function to generate the cod.
-        return cod;
+        std::string codGenerated = "420 124 125 126"; // TODO: Add a random function to generate the cod.
+        return codGenerated;
     }
 
     const std::string generateDataExpirare() {
-        std::string data_expirare = "01/06/2025"; // TODO: Add a random function to generate the date.
-        return data_expirare;
+        std::string dataExpirareGenerated = "01/06/2025"; // TODO: Add a random function to generate the date.
+        return dataExpirareGenerated;
     }
 
     const std::string generateCvv() {
-        std::string cvv = "123"; // TODO: Add a random function to generate the cvv.
-        return cvv;
+        std::string cvvGenerated = "123"; // TODO: Add a random function to generate the cvv.
+        return cvvGenerated;
     }
 
 public:
-    Card(): cod(generateCod()), data_expirare(generateDataExpirare()), cvv(generateCvv()) {
+    Card(): cod(generateCod()), dataExpirare(generateDataExpirare()), cvv(generateCvv()) {
         std::cout << "Const " << *this << '\n';
     }
 
-    Card(const Card& other): cod(other.cod), data_expirare(other.data_expirare), cvv(other.cvv) {
+    Card(const Card& other): cod(other.cod), dataExpirare(other.dataExpirare), cvv(other.cvv) {
         std::cout << "Constr de copiere" << *this << "\n";
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Card& card) {
-        os << card.cod << " " << card.data_expirare << " " << card.cvv << '\n';
+        os << card.cod << " " << card.dataExpirare << " " << card.cvv << '\n';
         return os;
     }
 
     Card& operator=(const Card& other) {
         std::cout << "operator= " << *this << "\n";
         cod = other.cod;
-        data_expirare = other.data_expirare;
+        dataExpirare = other.dataExpirare;
         cvv = other.cvv;
         return *this;
     }
@@ -58,15 +58,73 @@ public:
         std::cout << "Destroing card" << *this << "\n";
     }
 
+    bool checkCod(const std::string& codTry) {
+        if (cod == codTry) {
+            return true;
+        }
+        return false;
+    }
+
+    bool checkDataExpirare(const std::string& dataExpirareTry) {
+        if (dataExpirare == dataExpirareTry) {
+            return true;
+        }
+        return false;
+    }
+
+    bool checkCvv(const std::string& cvvTry) {
+        if (cvv == cvvTry) {
+            return true;
+        }
+        return false;
+    }
+    const std::string getCod() {
+        return cod;
+    }
+    const std::string getDataExpirare() {
+        return dataExpirare;
+    }
+    const std::string getCvv() {
+        return cvv;
+    }
 };
 
 class User {
     std::string nume, cnp, iban, email, numarTelefon;
     std::unordered_map<Currency, float> currencyAccount = {};
-    protected: std::vector<Card> carduri = {};
+    std::vector<Card> carduri = {};
+
+    bool haveCurrency(const Currency& currency) {
+        if (currencyAccount.find(currency) != currencyAccount.end()) {
+            return true;
+        }
+        return false;
+    }
+
+    bool haveAmountOfCurrency(float amount, const Currency& currency) {
+        if (haveCurrency(currency) && currencyAccount[currency] >= amount) {
+            return true;
+        }
+        return false;
+    }
+    bool checkCnp(const std::string& testCnp) {
+        if (cnp == testCnp) {
+            return true;
+        }
+        return false;
+    }
+
+    bool haveCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv) {
+        for (Card& card : carduri) {
+            if (card.checkCod(cod) && card.checkDataExpirare(dataExpirare) && card.checkCvv(cvv)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 public:
-    User()=default;
+    User() = default;
     User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numarTelefon):
         nume(nume_), cnp(cnp_), iban(iban_), email(email_), numarTelefon(numarTelefon) {
         std::cout << "User constructor\n" << *this;
@@ -117,25 +175,13 @@ public:
         std::cout << "Destroing User" << *this << "\n" << *this;
     }
 
-    const bool haveCurrency(const Currency& currency) {
-        if (currencyAccount.find(currency) != currencyAccount.end()) {
-            return true;
+    const std::vector<Card> getCardsWithCnp(const std::string& cnpTry) {
+        if (checkCnp(cnpTry)) {
+            return carduri;
         }
-        return false;
+        return {};
     }
 
-    const bool haveAmountOfCurrency(float amount, const Currency& currency) {
-        if (haveCurrency(currency) && currencyAccount[currency] >= amount) {
-            return true;
-        }
-        return false;
-    }
-    const bool checkCnp(const std::string testCnp) {
-        if (cnp == testCnp) {
-            return true;
-        }
-        return false;
-    }
 
     void addFunds(float amount, const Currency& currency) {
         if (haveCurrency(currency)) {
@@ -163,70 +209,86 @@ public:
         return false;
     }
 
-    Tranzactie tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency);
-    /*
-    TODO add functions for:
-    adaugare card
-    plataCard
-    */
-};
-
-class AppAccount: public User {
-    std::string username, password;
-
-public:
-    AppAccount(const std::string& username_, const std::string& password_): username(username_), password(password_) {
-        std::cout << "AppAccount constructor\n" << *this << '\n';
-    }
-
-    AppAccount(const AppAccount& other): username(other.username), password(other.password) {
-        std::cout << "Constr de copiere" << *this << "\n";
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
-        os << "Username: " << appAccount.username << '\n';
-        os << "Encrypted password: " << appAccount.password << '\n';
-        return os;
-    }
-
-    AppAccount& operator=(const AppAccount& other) {
-        std::cout << "operator=  " << *this << "\n";
-        username = other.username;
-        password = other.password;
-        return *this;
-    }
-
-    ~AppAccount() {
-        std::cout << "Destroing AppAccount" << *this << "\n";
-    }
-
-    const bool verifyPassword(const std::string& passwordTry) {
-        if (passwordTry == password) {
-            return true;
-        }
-        return false;
-    }
-
-    bool schimbaParolaCuCnp(const std::string& testCnp, const std::string& newPassword) {
-        if (checkCnp(testCnp)) {
-            password = newPassword;
-            return true;
-        }
-        return false;
-    }
-
-    bool tryToAddNewCard(const std::string& passwordTry) {
-        if (verifyPassword(passwordTry)) {
+    bool tryToAddNewCardWithCnp(const std::string& cnpTry) {
+        if (checkCnp(cnpTry)) {
             carduri.push_back(Card());
             return true;
         }
         return false;
     }
+
+    bool payWithCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv, float amount, const Currency& currency) {
+        if (haveCard(cod, dataExpirare, cvv) && haveAmountOfCurrency(amount, currency)) {
+            currencyAccount[currency] -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    Tranzactie tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency);
 };
+
+// Tema2
+// class AppAccount: public User {
+//     std::string username, password;
+
+//     std::string encryptPassword(const std::string& actualPassword) {
+//         std::string encryptedPassword = actualPassword; // TODO encrypt password.
+//         return encryptedPassword;
+//     }
+// public:
+//     AppAccount(const std::string& username_, const std::string& password_): username(username_), password(encryptPasswordpassword_) {
+//         std::cout << "AppAccount constructor\n" << *this << '\n';
+//     }
+
+//     AppAccount(const AppAccount& other): username(other.username), password(other.password) {
+//         std::cout << "Constr de copiere" << *this << "\n";
+//     }
+
+//     friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
+//         os << "Username: " << appAccount.username << '\n';
+//         os << "Encrypted password: " << appAccount.password << '\n';
+//         return os;
+//     }
+
+//     AppAccount& operator=(const AppAccount& other) {
+//         std::cout << "operator=  " << *this << "\n";
+//         username = other.username;
+//         password = other.password;
+//         return *this;
+//     }
+
+//     ~AppAccount() {
+//         std::cout << "Destroing AppAccount" << *this << "\n";
+//     }
+
+//     bool verifyPassword(const std::string& passwordTry) {
+//         if (passwordTry == password) {
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool schimbaParolaCuCnp(const std::string& testCnp, const std::string& newPassword) {
+//         if (checkCnp(testCnp)) {
+//             password = newPassword;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool tryToAddNewCard(const std::string& passwordTry) {
+//         if (verifyPassword(passwordTry)) {
+//             carduri.push_back(Card());
+//             return true;
+//         }
+//         return false;
+//     }
+// };
 
 // the withdraws are made between the company account and the user account
 class Tranzactie {
-    std::string ibanSender, ibanRecipient; 
+    std::string ibanSender, ibanRecipient;
     float value;
     Currency currency;
     bool realizata;
@@ -266,13 +328,13 @@ public:
 
 
 Tranzactie User::tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency) {
-        bool realizata = haveAmountOfCurrency(amount, currency);
-        if (realizata) {
-            currencyAccount[currency] -= amount;
-            recipientUser.addFunds(amount, currency);
-        }
-        return Tranzactie(iban, recipientUser.iban, amount, currency, realizata);
+    bool realizata = haveAmountOfCurrency(amount, currency);
+    if (realizata) {
+        currencyAccount[currency] -= amount;
+        recipientUser.addFunds(amount, currency);
     }
+    return Tranzactie(iban, recipientUser.iban, amount, currency, realizata);
+}
 
 
 std::unordered_map<std::string, std::string> creareDateUser() {
@@ -290,15 +352,20 @@ int main() {
     // Consider urmatorii vectori date de baza.
     std::vector<User> users = {};
     std::vector<Tranzactie> tranzactii = {};
-    std::vector<AppAccount> appAccounts = {};
+    // std::vector<AppAccount> appAccounts = {};
     // ----------------------------------------------------------------
     std::unordered_map<std::string, std::string> dateUser = creareDateUser();
     User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numarTelefon"]);
 
-    test_user.addFunds(1002, RON);
+    test_user.addFunds(1003, RON);
     test_user.withdrawal(1, RON);
     test_user.exchange(1, RON, USD);
+    test_user.tryToAddNewCardWithCnp(dateUser["cnp"]);
+
+    std::vector<Card> carduri_test_user = test_user.getCardsWithCnp(dateUser["cnp"]);
+    test_user.payWithCard(carduri_test_user.back().getCod(), carduri_test_user.back().getDataExpirare(), carduri_test_user.back().getCvv(), 1, RON);
     tranzactii.push_back(test_user.tryToMakeTransaction(test_user, 1000, RON));
+    users.push_back(test_user);
     // for (auto x : tranzactii) {
     //     std::cout << x << '\n';
     // }
