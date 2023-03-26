@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <unordered_map>
+#include <random.hpp>
 // TODO change all variables name to English :)
 // maybe clasa pentru bancomat?
 // maybe loan class
@@ -18,8 +19,11 @@ class Card {
     std::string cod, dataExpirare, cvv; // maybe import a date type
 
     const std::string generateCod() {
-        std::string codGenerated = "420 124 125 126"; // TODO: Add a random function to generate the cod.
-        return codGenerated;
+        using Random = effolkronium::random_static;
+        return  std::to_string(Random::get(1000, 9999)) + ' ' + 
+                std::to_string(Random::get(1000, 9999)) + ' ' + 
+                std::to_string(Random::get(1000, 9999)) + ' ' +
+                std::to_string(Random::get(1000, 9999));
     }
 
     const std::string generateDataExpirare() {
@@ -28,7 +32,8 @@ class Card {
     }
 
     const std::string generateCvv() {
-        std::string cvvGenerated = "123"; // TODO: Add a random function to generate the cvv.
+        using Random = effolkronium::random_static;
+        std::string cvvGenerated =  std::to_string(Random::get(100, 999)); // TODO: Add a random function to generate the cvv.
         return cvvGenerated;
     }
 
@@ -52,6 +57,10 @@ public:
         dataExpirare = other.dataExpirare;
         cvv = other.cvv;
         return *this;
+    }
+
+    friend bool operator==(const Card& lhs, const Card& rhs) {
+        return lhs.cod == rhs.cod && lhs.dataExpirare == rhs.dataExpirare && lhs.cvv == rhs.cvv;
     }
 
     ~Card() {
@@ -114,9 +123,9 @@ class User {
         return false;
     }
 
-    bool haveCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv) {
-        for (Card& card : carduri) {
-            if (card.checkCod(cod) && card.checkDataExpirare(dataExpirare) && card.checkCvv(cvv)) {
+    bool haveCard(const Card& card_try) {
+        for (const Card& card : carduri) {
+            if (card == card_try) {
                 return true;
             }
         }
@@ -217,8 +226,8 @@ public:
         return false;
     }
 
-    bool payWithCard(const std::string& cod, const std::string& dataExpirare, const std::string& cvv, float amount, const Currency& currency) {
-        if (haveCard(cod, dataExpirare, cvv) && haveAmountOfCurrency(amount, currency)) {
+    bool payWithCard(const Card& card, float amount, const Currency& currency) {
+        if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {
             currencyAccount[currency] -= amount;
             return true;
         }
@@ -247,7 +256,7 @@ public:
 
 //     friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
 //         os << "Username: " << appAccount.username << '\n';
-//         os << "Encrypted password: " << appAccount.password << '\n';
+//         os << "Encrypted password: " << [REDACTED] << '\n';
 //         return os;
 //     }
 
@@ -259,7 +268,7 @@ public:
 //     }
 
 //     ~AppAccount() {
-//         std::cout << "Destroing AppAccount" << *this << "\n";
+//         std::cout << "Destroying AppAccount" << *this << "\n";
 //     }
 
 //     bool verifyPassword(const std::string& passwordTry) {
@@ -349,7 +358,7 @@ std::unordered_map<std::string, std::string> creareDateUser() {
 
 
 int main() {
-    // Consider urmatorii vectori date de baza.
+    // Consider urmatorii vectori baza de date.
     std::vector<User> users = {};
     std::vector<Tranzactie> tranzactii = {};
     // std::vector<AppAccount> appAccounts = {};
@@ -363,7 +372,7 @@ int main() {
     test_user.tryToAddNewCardWithCnp(dateUser["cnp"]);
 
     std::vector<Card> carduri_test_user = test_user.getCardsWithCnp(dateUser["cnp"]);
-    test_user.payWithCard(carduri_test_user.back().getCod(), carduri_test_user.back().getDataExpirare(), carduri_test_user.back().getCvv(), 1, RON);
+    test_user.payWithCard(carduri_test_user.back(), 1, RON);
     tranzactii.push_back(test_user.tryToMakeTransaction(test_user, 1000, RON));
     users.push_back(test_user);
     // for (auto x : tranzactii) {
