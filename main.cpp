@@ -67,35 +67,35 @@ public:
         std::cout << "Destroing card" << *this << "\n";
     }
 
-    bool checkCod(const std::string& codTry) {
-        if (cod == codTry) {
-            return true;
-        }
-        return false;
-    }
+    // bool checkCod(const std::string& codTry) {
+    //     if (cod == codTry) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    bool checkDataExpirare(const std::string& dataExpirareTry) {
-        if (dataExpirare == dataExpirareTry) {
-            return true;
-        }
-        return false;
-    }
+    // bool checkDataExpirare(const std::string& dataExpirareTry) {
+    //     if (dataExpirare == dataExpirareTry) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    bool checkCvv(const std::string& cvvTry) {
-        if (cvv == cvvTry) {
-            return true;
-        }
-        return false;
-    }
-    const std::string getCod() {
-        return cod;
-    }
-    const std::string getDataExpirare() {
-        return dataExpirare;
-    }
-    const std::string getCvv() {
-        return cvv;
-    }
+    // bool checkCvv(const std::string& cvvTry) {
+    //     if (cvv == cvvTry) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    // const std::string getCod() {
+    //     return cod;
+    // }
+    // const std::string getDataExpirare() {
+    //     return dataExpirare;
+    // }
+    // const std::string getCvv() {
+    //     return cvv;
+    // }
 };
 
 class User {
