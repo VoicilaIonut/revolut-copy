@@ -4,6 +4,8 @@
 #include <fstream>
 #include <unordered_map>
 #include <random.hpp>
+#include <date.h>
+#include <chrono>
 // TODO change all variables name to English :)
 // maybe clasa pentru bancomat?
 // maybe loan class
@@ -16,7 +18,7 @@ enum Currency {
 
 class Tranzactie;
 class Card {
-    std::string cod, dataExpirare, cvv; // maybe import a date type
+    std::string cod, dataExpirare, cvv;
 
     const std::string generateCod() {
         using Random = effolkronium::random_static;
@@ -27,8 +29,7 @@ class Card {
     }
 
     const std::string generateDataExpirare() {
-        std::string dataExpirareGenerated = "01/06/2025"; // TODO: Add a random function to generate the date.
-        return dataExpirareGenerated;
+        return date::format("%Y-%m-%d", std::chrono::system_clock::now() + std::chrono::hours(24 * 30 * 60));
     }
 
     const std::string generateCvv() {
@@ -59,8 +60,8 @@ public:
         return *this;
     }
 
-    friend bool operator==(const Card& lhs, const Card& rhs) {
-        return lhs.cod == rhs.cod && lhs.dataExpirare == rhs.dataExpirare && lhs.cvv == rhs.cvv;
+    bool operator==(const Card& other) const {
+        return other.cod == this->cod && other.dataExpirare == this->dataExpirare && other.cvv == this->cvv;
     }
 
     ~Card() {
