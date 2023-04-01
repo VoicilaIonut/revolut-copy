@@ -714,8 +714,9 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion,cmake,codeblocks,emacs,gcov,sublimetext,vim,visualstudio,visualstudiocode,xcode
 
 # vscode
-.vscode
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/settings.json
-.sln
+.vscode/
+*.sln
+
+# buils
+build/
+main
