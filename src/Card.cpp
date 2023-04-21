@@ -1,9 +1,10 @@
 #include "../headers/Card.hpp"
 
-#include <iostream>
+#include <date.h>
 
-#include "../ext/include/date/date.h"
-#include "../ext/include/random/random.hpp"
+#include <iostream>
+#include <random.hpp>
+
 #include "../headers/Tranzactie.hpp"
 #include "../headers/User.hpp"
 

@@ -5,7 +5,6 @@
 
 #include "Card.hpp"
 #include "Currencies.hpp"
-#include "User.hpp"
 
 // the withdraws are made between the company account and the user account
 class Tranzactie {

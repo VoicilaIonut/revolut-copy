@@ -5,7 +5,6 @@
 
 #include "Currencies.hpp"
 #include "Tranzactie.hpp"
-#include "User.hpp"
 
 class Card {
     std::string cod, dataExpirare, cvv;
