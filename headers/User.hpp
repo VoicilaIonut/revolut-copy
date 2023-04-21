@@ -22,10 +22,10 @@ class User {
 
     bool haveCard(const Card &card_try);
 
-   protected:
-    void changeNumarTelefon(const std::string numarTelefonNew);
+    //    protected:
+    //     void changeNumarTelefon(const std::string &numarTelefonNew);
 
-    void changeEmail(const std::string emailNew);
+    //     void changeEmail(const std::string &emailNew);
 
    public:
     User();

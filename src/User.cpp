@@ -35,11 +35,11 @@ bool User::haveCard(const Card& card_try) {
     return false;
 }
 
-void User::changeNumarTelefon(const std::string numarTelefonNew) {
-    numarTelefon = numarTelefonNew;
-}
+// void User::changeNumarTelefon(const std::string& numarTelefonNew) {
+//     numarTelefon = numarTelefonNew;
+// }
 
-void User::changeEmail(const std::string emailNew) { email = emailNew; }
+// void User::changeEmail(const std::string& emailNew) { email = emailNew; }
 
 User::User() = default;
 
