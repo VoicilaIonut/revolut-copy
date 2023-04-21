@@ -4,52 +4,59 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-#include "Card.hpp"
-#include "Tranzactie.hpp"
-#include "Currencies.hpp"
 
-class Card;
+#include "Card.hpp"
+#include "Currencies.hpp"
+#include "Tranzactie.hpp"
 
 class User {
     std::string nume, cnp, iban, email, numarTelefon;
     std::unordered_map<Currency, float> currencyAccount = {};
     std::vector<Card> carduri = {};
 
-    bool haveCurrency(const Currency& currency);
+    bool haveCurrency(const Currency &currency);
 
-    bool haveAmountOfCurrency(float amount, const Currency& currency);
+    bool haveAmountOfCurrency(float amount, const Currency &currency);
 
-    bool checkCnp(const std::string& testCnp);
+    bool checkCnp(const std::string &testCnp);
 
-    bool haveCard(const Card& card_try);
+    bool haveCard(const Card &card_try);
 
-public:
+   protected:
+    void changeNumarTelefon(const std::string numarTelefonNew);
+
+    void changeEmail(const std::string emailNew);
+
+   public:
     User();
-    
-    User(const std::string& nume_, const std::string& cnp_, const std::string& iban_, const std::string& email_, const std::string& numarTelefon);
 
-    User(const User& other);
+    User(const std::string &nume_, const std::string &cnp_,
+         const std::string &iban_, const std::string &email_,
+         const std::string &numarTelefon);
 
-    friend std::ostream& operator<<(std::ostream& os, const User& user);
+    User(const User &other);
 
-    User& operator=(const User& other);
+    friend std::ostream &operator<<(std::ostream &os, const User &user);
+
+    User &operator=(const User &other);
 
     ~User();
 
-    const std::vector<Card> getCardsWithCnp(const std::string& cnpTry);
+    const std::vector<Card> getCardsWithCnp(const std::string &cnpTry);
 
+    void addFunds(float amount, const Currency &currency);
 
-    void addFunds(float amount, const Currency& currency);
+    bool exchange(float amount, const Currency &currencyFrom,
+                  const Currency &currencyTo);
 
-    bool exchange(float amount, const Currency& currencyFrom, const Currency& currencyTo);
+    bool withdrawal(float amount, const Currency &currency);
 
-    bool withdrawal(float amount, const Currency& currency);
+    bool tryToAddNewCardWithCnp(const std::string &cnpTry);
 
-    bool tryToAddNewCardWithCnp(const std::string& cnpTry);
+    bool payWithCard(const Card &card, float amount, const Currency &currency);
 
-    bool payWithCard(const Card& card, float amount, const Currency& currency);
-
-    Tranzactie tryToMakeTransaction(User& recipientUser, float amount, const Currency& currency);
+    Tranzactie tryToMakeTransaction(User &recipientUser, float amount,
+                                    const Currency &currency);
 };
 
 #endif

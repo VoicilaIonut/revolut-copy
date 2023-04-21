@@ -2,9 +2,10 @@
 #define CARD_HPP
 
 #include <iostream>
-#include "User.hpp"
-#include "Tranzactie.hpp"
+
 #include "Currencies.hpp"
+#include "Tranzactie.hpp"
+#include "User.hpp"
 
 class Card {
     std::string cod, dataExpirare, cvv;
@@ -15,7 +16,7 @@ class Card {
 
     const std::string generateCvv();
 
-public:
+   public:
     Card();
 
     Card(const Card& other);

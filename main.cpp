@@ -1,14 +1,13 @@
-#include "headers/Card.hpp"
-#include "headers/Currencies.hpp"
-#include "headers/User.hpp"
-#include "headers/Tranzactie.hpp"
-
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <unordered_map>
-#include <chrono>
+#include <vector>
 
+#include "headers/Card.hpp"
+#include "headers/Currencies.hpp"
+#include "headers/Tranzactie.hpp"
+#include "headers/User.hpp"
 
 // maybe clasa pentru bancomat?
 // maybe loan class
@@ -18,19 +17,22 @@
 //     std::string username, password;
 
 //     std::string encryptPassword(const std::string& actualPassword) {
-//         std::string encryptedPassword = actualPassword; // TODO encrypt password.
-//         return encryptedPassword;
+//         std::string encryptedPassword = actualPassword; // TODO encrypt
+//         password. return encryptedPassword;
 //     }
 // public:
-//     AppAccount(const std::string& username_, const std::string& password_): username(username_), password(encryptPasswordpassword_) {
+//     AppAccount(const std::string& username_, const std::string& password_):
+//     username(username_), password(encryptPasswordpassword_) {
 //         std::cout << "AppAccount constructor\n" << *this << '\n';
 //     }
 
-//     AppAccount(const AppAccount& other): username(other.username), password(other.password) {
+//     AppAccount(const AppAccount& other): username(other.username),
+//     password(other.password) {
 //         std::cout << "Constr de copiere" << *this << "\n";
 //     }
 
-//     friend std::ostream& operator<<(std::ostream& os, const AppAccount& appAccount) {
+//     friend std::ostream& operator<<(std::ostream& os, const AppAccount&
+//     appAccount) {
 //         os << "Username: " << appAccount.username << '\n';
 //         os << "Encrypted password: " << [REDACTED] << '\n';
 //         return os;
@@ -54,7 +56,8 @@
 //         return false;
 //     }
 
-//     bool schimbaParolaCuCnp(const std::string& testCnp, const std::string& newPassword) {
+//     bool schimbaParolaCuCnp(const std::string& testCnp, const std::string&
+//     newPassword) {
 //         if (checkCnp(testCnp)) {
 //             password = newPassword;
 //             return true;
@@ -81,44 +84,42 @@ std::unordered_map<std::string, std::string> creareDateUser() {
     return dateUser;
 }
 
-
-int main() {
+void test() {
     // Consider urmatorii vectori baza de date.
     std::vector<User> users = {};
     std::vector<Tranzactie> tranzactii = {};
-    // std::vector<AppAccount> appAccounts = {};
-    // ----------------------------------------------------------------
+    // ----------------------------------------
+
     std::unordered_map<std::string, std::string> dateUser = creareDateUser();
-    User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numarTelefon"]);
 
-    test_user.addFunds(1003, RON);
-    test_user.withdrawal(1, RON);
-    test_user.exchange(1, RON, USD);
-    test_user.tryToAddNewCardWithCnp(dateUser["cnp"]);
+    User test_user1("Ion", "4020927000000", "1", "test1@example", "0710000000");
+    users.push_back(test_user1);
+    User test_user2("Gigel", "3020927000000", "2", "test2@example",
+                    "0720000000");
+    users.push_back(test_user2);
 
-    std::vector<Card> carduri_test_user = test_user.getCardsWithCnp(dateUser["cnp"]);
-    test_user.payWithCard(carduri_test_user.back(), 1, RON);
-    tranzactii.push_back(test_user.tryToMakeTransaction(test_user, 1000, RON));
-    users.push_back(test_user);
-    // for (auto x : tranzactii) {
-    //     std::cout << x << '\n';
-    // }
+    test_user1.addFunds(1003, RON);
+    test_user1.withdrawal(1, RON);
+    test_user1.exchange(1, RON, USD);
 
-    // std::cout << "Hello, world!\n";
+    test_user1.tryToAddNewCardWithCnp(dateUser["cnp"]);
+    std::vector<Card> carduri_test_user =
+        test_user1.getCardsWithCnp(dateUser["cnp"]);
+    test_user1.payWithCard(carduri_test_user.back(), 1, RON);
 
-    // std::unordered_map<std::string, std::string> dateUser = creareDateUser();
+    Tranzactie test_tranzactie =
+        test_user1.tryToMakeTransaction(test_user2, 1000, RON);
+    tranzactii.push_back(test_tranzactie);
 
-    // Card test_card("1234 56789", "27/09/1900", "420");
-    // std::cout << test_card << '\n';
-
-    // User test_user(dateUser["nume"], dateUser["cnp"], dateUser["iban"], dateUser["email"], dateUser["numarTelefon"]);
-    // std::cout << "test_user: " << test_user << '\n';
+    for (auto x : tranzactii) {
+        std::cout << x << '\n';
+    }
 
     // AppAccount app_account(test_user, "1234");
     // std::cout << "AppAccount: " << app_account << '\n';
+}
 
-    // Tranzactie test_tranzactie(test_user, test_user, float(12.1), RON, true);
-    // std::cout << "test_tranzactie: " << test_tranzactie << '\n';
-
+int main() {
+    test();
     return 0;
 }
