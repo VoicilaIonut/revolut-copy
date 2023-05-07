@@ -35,6 +35,11 @@ void test() {
 
     std::shared_ptr<Account> accountTestUser1 = test_user1.getAccounts().front();
     std::shared_ptr<Account> accountTestUser2 = test_user2.getAccounts().front();
+    std::shared_ptr<Account> cloneTest = accountTestUser2->clone();
+
+
+    auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1); 
+    std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
 
     accountTestUser1->addFunds(1003, RON);
     accountTestUser1->withdrawal(1, RON);

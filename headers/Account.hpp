@@ -29,7 +29,8 @@ protected:
     std::string generareIban(); 
 public:
     Account();
-    // virtual Account* clone () const = 0;
+    virtual std::shared_ptr<Account> clone () const = 0;
+    
     virtual ~Account() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Account& user);

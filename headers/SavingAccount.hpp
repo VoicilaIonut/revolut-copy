@@ -11,19 +11,17 @@
 #include "Tranzactie.hpp"
 #include "Account.hpp"
 
-class SavingAccount: public Account {
+class SavingAccount : public Account {
     static float interestRate;
     float taxToUseMoney = 0.1f;
 public:
-    SavingAccount() : Account() {
-        std::cout << "Constr saving account\n";
-    }
+    SavingAccount();
 
-    /*std::shared_ptr<Account> clone() const override { 
-        return std::make_shared<SavingAccount>(*this);
-    };*/
+    std::shared_ptr<Account> clone() const override;
 
     bool payWithCard(const Card& card, float amount, const Currency& currency) override;
+
+    static float computeValueWithInterestRate(float value);
 };
 
 #endif
