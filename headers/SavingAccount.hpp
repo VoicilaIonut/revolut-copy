@@ -13,7 +13,7 @@
 
 class SavingAccount: public Account {
     static float interestRate;
-    float taxToUseMoney = 0.1;
+    float taxToUseMoney = 0.1f;
 public:
     SavingAccount() : Account() {
         std::cout << "Constr saving account\n";
@@ -23,14 +23,7 @@ public:
         return std::make_shared<SavingAccount>(*this);
     };*/
 
-    bool payWithCard(const Card& card, float amount, const Currency& currency) override {
-        float amountAfterTax = amount + amount * taxToUseMoney;
-        if (haveCard(card) && haveAmountOfCurrency(amountAfterTax, currency)) {
-            currencyAccount[currency] -= amount;
-            return true;
-        }
-        return false;
-    }
+    bool payWithCard(const Card& card, float amount, const Currency& currency) override;
 };
 
 #endif
