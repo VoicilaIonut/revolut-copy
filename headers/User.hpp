@@ -4,59 +4,43 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include "Card.hpp"
 #include "Currencies.hpp"
 #include "Tranzactie.hpp"
+#include "Account.hpp"
+#include "SavingAccount.hpp"
 
 class User {
-    std::string nume, cnp, iban, email, numarTelefon;
-    std::unordered_map<Currency, float> currencyAccount = {};
-    std::vector<Card> carduri = {};
+    std::string nume, cnp, email, numarTelefon;
+    std::vector<std::shared_ptr<Account>> accounts;
 
-    bool haveCurrency(const Currency &currency);
+    bool checkCnp(const std::string& testCnp);
 
-    bool haveAmountOfCurrency(float amount, const Currency &currency);
+    // void changeEmail(const std::string &emailNew);
 
-    bool checkCnp(const std::string &testCnp);
-
-    bool haveCard(const Card &card_try);
-
-    //    protected:
-    //     void changeNumarTelefon(const std::string &numarTelefonNew);
-
-    //     void changeEmail(const std::string &emailNew);
-
-   public:
+public:
     User();
 
-    User(const std::string &nume_, const std::string &cnp_,
-         const std::string &iban_, const std::string &email_,
-         const std::string &numarTelefon);
+    User(const std::string& nume_, const std::string& cnp_,
+        const std::string& email_,
+        const std::string& numarTelefon);
 
-    User(const User &other);
+    User(const User& other);
 
-    friend std::ostream &operator<<(std::ostream &os, const User &user);
+    friend std::ostream& operator<<(std::ostream& os, const User& user);
 
-    User &operator=(const User &other);
+    User& operator=(const User& other);
 
     ~User();
 
-    const std::vector<Card> getCardsWithCnp(const std::string &cnpTry);
+    void createAccount(const std::string& typeOfAccount);
 
-    void addFunds(float amount, const Currency &currency);
+    std::vector<std::shared_ptr<Account>> getAccounts();
 
-    bool exchange(float amount, const Currency &currencyFrom,
-                  const Currency &currencyTo);
+    bool tryToAddNewCardWithCnp(const std::string &cnpTry, std::shared_ptr<Account>& account);
 
-    bool withdrawal(float amount, const Currency &currency);
-
-    bool tryToAddNewCardWithCnp(const std::string &cnpTry);
-
-    bool payWithCard(const Card &card, float amount, const Currency &currency);
-
-    Tranzactie tryToMakeTransaction(User &recipientUser, float amount,
-                                    const Currency &currency);
 };
 
 #endif
