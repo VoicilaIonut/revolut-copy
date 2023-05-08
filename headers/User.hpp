@@ -29,9 +29,11 @@ public:
 
     User(const User& other);
 
-    friend std::ostream& operator<<(std::ostream& os, const User& user);
+    User& operator=(User other);
 
-    User& operator=(const User& other);
+    friend void swap(User& user1, User& user2);
+
+    friend std::ostream& operator<<(std::ostream& os, const User& user);
 
     ~User();
 

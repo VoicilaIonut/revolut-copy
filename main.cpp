@@ -35,13 +35,20 @@ void test() {
 
     std::shared_ptr<Account> accountTestUser1 = test_user1.getAccounts().front();
     std::shared_ptr<Account> accountTestUser2 = test_user2.getAccounts().front();
-    std::shared_ptr<Account> cloneTest = accountTestUser2->clone();
 
+    std::cout << "Testare afisare Account: \n" << *accountTestUser1 << '\n';
 
     auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1); 
     std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
 
     accountTestUser1->addFunds(1003, RON);
+
+    // --- testare clonare
+    std::shared_ptr<Account> cloneTest = accountTestUser1->clone();
+    cloneTest->withdrawal(1002, RON);
+    std::cout << "Testare clonare (trebuie sa dea diferit): \n" << *accountTestUser1 << '\n' << *cloneTest << "\n\n";
+    //--- end testare clonare
+
     accountTestUser1->withdrawal(1, RON);
     accountTestUser1->exchange(1, RON, USD);
 
