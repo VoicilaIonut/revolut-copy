@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #include "../headers/Card.hpp"
 #include "../headers/Tranzactie.hpp"
@@ -13,7 +14,7 @@ bool User::checkCnp(const std::string &testCnp) {
   return false;
 }
 
- std::vector<std::shared_ptr<Account>> User::getAccounts() { return accounts; }
+std::vector<std::shared_ptr<Account>> User::getAccounts() { return accounts; }
 
 User::User() = default;
 
@@ -25,8 +26,26 @@ User::User(const std::string &nume_, const std::string &cnp_,
 
 User::User(const User &other)
     : nume(other.nume), cnp(other.cnp), email(other.email),
-      numarTelefon(other.numarTelefon), accounts(other.accounts) {
+      numarTelefon(other.numarTelefon) {
+  accounts.clear();
+  for (const auto &account : other.accounts) {
+    accounts.emplace_back(account->clone());
+  }
   std::cout << "Constr de copiere" << *this << "\n";
+}
+
+User& User::operator=(User other) {
+  swap(*this, other);
+  return *this;
+}
+
+void swap(User& user1, User& user2) {
+  using std::swap;
+  swap(user1.nume, user2.nume);
+  swap(user1.cnp, user2.cnp);
+  swap(user1.email, user2.email);
+  swap(user1.numarTelefon, user2.numarTelefon);
+  swap(user1.accounts, user2.accounts);
 }
 
 std::ostream &operator<<(std::ostream &os, const User &user) {
@@ -34,28 +53,22 @@ std::ostream &operator<<(std::ostream &os, const User &user) {
   // os << "User cnp: " << user.cnp << '\n';
   // os << "User email: " << user.email << '\n';
   // os << "User numar telefon: " << user.numarTelefon << '\n';
-  os << "User accounts: \n";
-  for (auto account : user.accounts) {
-    os << *account << '\n';
+  if (user.accounts.empty()) {
+    os << "The user has no accounts\n";
+  } else {
+    os << "User accounts: \n";
+    for (auto account : user.accounts) {
+      os << *account << '\n';
+    }
   }
   return os;
-}
-
-User &User::operator=(const User &other) {
-  std::cout << "operator= " << *this << "\n";
-  nume = other.nume;
-  cnp = other.cnp;
-  email = other.email;
-  numarTelefon = other.numarTelefon;
-  accounts = other.accounts;
-  return *this;
 }
 
 User::~User() { std::cout << "Destroing User" << *this << "\n" << *this; }
 
 void User::createAccount(const std::string& typeOfAccount) {
-    if (typeOfAccount == "Savings") 
-        accounts.push_back(std::make_shared<SavingAccount>()); 
+  if (typeOfAccount == "Savings")
+    accounts.emplace_back(std::make_shared<SavingAccount>());
 }
 
 bool User::tryToAddNewCardWithCnp(const std::string &cnpTry, std::shared_ptr<Account>& account) {

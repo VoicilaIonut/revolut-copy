@@ -15,7 +15,7 @@ std::string Account::generareIban() {
 }
 
 Account::Account() : iban(generareIban()) {
-    std::cout << "Const " << *this << '\n';
+    // std::cout << "Const " << *this << '\n'; this will call a virtual function, nono
 }
 
 std::ostream& operator<<(std::ostream& os, const Account& account) {
@@ -37,6 +37,7 @@ std::ostream& operator<<(std::ostream& os, const Account& account) {
             os << "Account carduri: " << *it << '\n';
         }
     }
+    account.print(os);
     return os;
 }
 

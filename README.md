@@ -4,6 +4,7 @@
 
 - [x] Nume proiect (poate fi schimbat ulterior)
 - [x] Scurtă descriere a temei alese, ce v-ați propus să implementați
+
 O incercare de server bancar cu o viitoare interfata pentru useri (in consola sau pe web printr-o librarie) in care un utilizator poate face cam ce fac toate aplicatiile bancare (creeare cont, creeare cont bancar, adaugare fonduri, transferuri, exchange). 
 
 ## Tema 1
@@ -33,8 +34,8 @@ O incercare de server bancar cu o viitoare interfata pentru useri (in consola sa
     - minim o funcție virtuală va fi **specifică temei** (e.g. nu simple citiri/afișări)
   - [x] apelarea constructorului din clasa de bază din constructori din derivate
   - [x] smart pointers
-  - [?] `dynamic_cast`
-- [ ] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
+  - [x] `dynamic_cast`
+- [x] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
 - [ ] excepții
   - [ ] ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`; minim 2 clase pentru erori specifice
   - [ ] utilizare cu sens: de exemplu, `throw` în constructor, `try`/`catch` în `main`

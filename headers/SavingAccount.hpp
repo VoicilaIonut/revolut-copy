@@ -14,6 +14,9 @@
 class SavingAccount : public Account {
     static float interestRate;
     float taxToUseMoney = 0.1f;
+
+    void print(std::ostream& os) const override;
+
 public:
     SavingAccount();
 

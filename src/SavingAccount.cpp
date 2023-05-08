@@ -8,8 +8,18 @@
 
 float SavingAccount::interestRate = 0.05f;
 
+void SavingAccount::print(std::ostream& os) const {
+    os << "Type: Saving Account\n";
+    os << "Tax to use the money: " << taxToUseMoney << '\n';
+}
+
 SavingAccount::SavingAccount() : Account() {
     std::cout << "Constr saving account\n";
+}
+
+std::shared_ptr<Account> SavingAccount::clone() const {
+    std::cout << "clonare saving account\n";
+    return std::make_shared<SavingAccount>(*this);
 }
 
 bool SavingAccount::payWithCard(const Card& card, float amount, const Currency& currency) {
@@ -19,11 +29,6 @@ bool SavingAccount::payWithCard(const Card& card, float amount, const Currency& 
         return true;
     }
     return false;
-}
-
-std::shared_ptr<Account> SavingAccount::clone() const {
-    std::cout << "clonare saving account\n";
-    return std::make_shared<SavingAccount>(*this);
 }
 
 float SavingAccount::computeValueWithInterestRate(float value) {

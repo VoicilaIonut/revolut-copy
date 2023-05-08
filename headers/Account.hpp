@@ -12,12 +12,20 @@
 #include "Tranzactie.hpp"
 
 class Account {
+private:
+    virtual void print(std::ostream& os) const = 0;
+
 protected:
     std::string iban;
     std::unordered_map<Currency, float> currencyAccount = {};
     std::vector<Card> carduri = {};
 
+    Account();
+
     Account(const Account& other) = default;
+    
+    virtual ~Account() = default;
+
     Account& operator=(const Account& other) = default;
 
     bool haveCurrency(const Currency& currency);
@@ -28,10 +36,7 @@ protected:
 
     std::string generareIban(); 
 public:
-    Account();
     virtual std::shared_ptr<Account> clone () const = 0;
-    
-    virtual ~Account() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Account& user);
 
