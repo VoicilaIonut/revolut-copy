@@ -23,7 +23,7 @@ protected:
     Account();
 
     Account(const Account& other) = default;
-    
+
     virtual ~Account() = default;
 
     Account& operator=(const Account& other) = default;
@@ -34,9 +34,11 @@ protected:
 
     bool haveCard(const Card& card_try);
 
-    std::string generareIban(); 
+    std::string generareIban();
+
+    virtual float calculatePayAmountWithTax(const float& amount)const = 0;
 public:
-    virtual std::shared_ptr<Account> clone () const = 0;
+    virtual std::shared_ptr<Account> clone() const = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Account& user);
 
@@ -50,8 +52,8 @@ public:
     void addNewCard();
 
     // bool payWithCard(const Card& card, float amount, const Currency& currency);
-    virtual bool payWithCard(const Card& card, float amount, const Currency& currency) = 0;
-
+    bool payWithCard(const Card& card, float amount, const Currency& currency);
+    
     Tranzactie tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount,
         const Currency& currency);
 

@@ -13,14 +13,14 @@ class Tranzactie {
     Currency currency;
     bool realizata;
 
-   public:
+public:
     Tranzactie(const std::string& ibanSender, const std::string& ibanRecipient,
-               float value_, const Currency& currency_, bool realizata_);
+        float value_, const Currency& currency_, bool realizata_);
 
     Tranzactie(const Tranzactie& other);
 
     friend std::ostream& operator<<(std::ostream& os,
-                                    const Tranzactie& tranzactie);
+        const Tranzactie& tranzactie);
 
     Tranzactie& operator=(const Tranzactie& tranzactie);
 

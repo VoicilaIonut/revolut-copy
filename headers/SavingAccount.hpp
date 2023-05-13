@@ -17,12 +17,11 @@ class SavingAccount : public Account {
 
     void print(std::ostream& os) const override;
 
+    virtual float calculatePayAmountWithTax(const float& amount) const override;
 public:
     SavingAccount();
 
     std::shared_ptr<Account> clone() const override;
-
-    bool payWithCard(const Card& card, float amount, const Currency& currency) override;
 
     static float computeValueWithInterestRate(float value);
 };

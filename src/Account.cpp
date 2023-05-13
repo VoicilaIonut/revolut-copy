@@ -41,7 +41,6 @@ std::ostream& operator<<(std::ostream& os, const Account& account) {
     return os;
 }
 
-
 bool Account::haveCurrency(const Currency& currency) {
     if (currencyAccount.find(currency) != currencyAccount.end()) {
         return true;
@@ -92,20 +91,19 @@ bool Account::withdrawal(float amount, const Currency& currency) {
     return false;
 }
 
-
-// bool Account::payWithCard(const Card& card, float amount,
-//     const Currency& currency) {
-//     if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {
-//         currencyAccount[currency] -= amount;
-//         return true;
-//     }
-//     return false;
-// }
+bool Account::payWithCard(const Card& card, float amount,
+    const Currency& currency) {
+    amount = calculatePayAmountWithTax(amount);
+    if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {
+        currencyAccount[currency] -= amount;
+        return true;
+    }
+    return false;
+}
 
 void Account::addNewCard() {
     carduri.push_back(Card());
 }
-
 
 Tranzactie Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount, const Currency& currency) {
     bool realizata = haveAmountOfCurrency(amount, currency);
