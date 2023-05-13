@@ -10,7 +10,7 @@ class AppError : public std::runtime_error {
 
 class AccountError : public AppError {
 public:
-    explicit AccountError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
+    explicit AccountError(const std::string& mesaj) : AppError(mesaj) { }
 };
 
 class NoAmountOfMoneyInCurrency: public AccountError {
@@ -22,7 +22,7 @@ public:
 
 class CardError : public AppError { 
 public:
-    explicit CardError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
+    explicit CardError(const std::string& mesaj) : AppError(mesaj) { }
 };
 
 class ExpiredCard : public CardError { 
