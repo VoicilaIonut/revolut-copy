@@ -15,7 +15,7 @@ class Card {
 
     const std::string generateCvv();
 
-   public:
+public:
     Card();
 
     Card(const Card& other);

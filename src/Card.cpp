@@ -11,14 +11,14 @@
 const std::string Card::generateCod() {
     using Random = effolkronium::random_static;
     return std::to_string(Random::get(1000, 9999)) + ' ' +
-           std::to_string(Random::get(1000, 9999)) + ' ' +
-           std::to_string(Random::get(1000, 9999)) + ' ' +
-           std::to_string(Random::get(1000, 9999));
+        std::to_string(Random::get(1000, 9999)) + ' ' +
+        std::to_string(Random::get(1000, 9999)) + ' ' +
+        std::to_string(Random::get(1000, 9999));
 }
 
 const std::string Card::generateDataExpirare() {
     return date::format("%Y-%m-%d", std::chrono::system_clock::now() +
-                                        std::chrono::hours(24 * 30 * 60));
+        std::chrono::hours(24 * 30 * 60));
 }
 
 const std::string Card::generateCvv() {
@@ -29,22 +29,22 @@ const std::string Card::generateCvv() {
 
 Card::Card()
     : cod(generateCod()),
-      dataExpirare(generateDataExpirare()),
-      cvv(generateCvv()) {
+    dataExpirare(generateDataExpirare()),
+    cvv(generateCvv()) {
     std::cout << "Const " << *this << '\n';
 }
 
-Card::Card(const Card &other)
+Card::Card(const Card& other)
     : cod(other.cod), dataExpirare(other.dataExpirare), cvv(other.cvv) {
     std::cout << "Constr de copiere" << *this << "\n";
 }
 
-std::ostream &operator<<(std::ostream &os, const Card &card) {
+std::ostream& operator<<(std::ostream& os, const Card& card) {
     os << card.cod << " " << card.dataExpirare << " " << card.cvv << '\n';
     return os;
 }
 
-Card &Card::operator=(const Card &other) {
+Card& Card::operator=(const Card& other) {
     std::cout << "operator= " << *this << "\n";
     cod = other.cod;
     dataExpirare = other.dataExpirare;
@@ -52,9 +52,9 @@ Card &Card::operator=(const Card &other) {
     return *this;
 }
 
-bool Card::operator==(const Card &other) const {
+bool Card::operator==(const Card& other) const {
     return other.cod == this->cod && other.dataExpirare == this->dataExpirare &&
-           other.cvv == this->cvv;
+        other.cvv == this->cvv;
 }
 
 Card::~Card() { std::cout << "Destroing card" << *this << "\n"; }
