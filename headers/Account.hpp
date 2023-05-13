@@ -44,16 +44,15 @@ public:
 
     void addFunds(float amount, const Currency& currency);
 
-    bool exchange(float amount, const Currency& currencyFrom,
+    void exchange(float amount, const Currency& currencyFrom,
         const Currency& currencyTo);
 
-    bool withdrawal(float amount, const Currency& currency);
+    void withdrawal(float amount, const Currency& currency);
 
     void addNewCard();
 
-    // bool payWithCard(const Card& card, float amount, const Currency& currency);
     bool payWithCard(const Card& card, float amount, const Currency& currency);
-    
+
     Tranzactie tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount,
         const Currency& currency);
 

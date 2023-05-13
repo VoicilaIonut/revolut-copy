@@ -1,12 +1,12 @@
 #include "../headers/Card.hpp"
 
-#include <date.h>
 
 #include <iostream>
 #include <random.hpp>
 
 #include "../headers/Tranzactie.hpp"
 #include "../headers/User.hpp"
+#include "../headers/Errors.hpp"
 
 const std::string Card::generateCod() {
     using Random = effolkronium::random_static;
@@ -16,9 +16,9 @@ const std::string Card::generateCod() {
         std::to_string(Random::get(1000, 9999));
 }
 
-const std::string Card::generateDataExpirare() {
-    return date::format("%Y-%m-%d", std::chrono::system_clock::now() +
-        std::chrono::hours(24 * 30 * 60));
+const date::year_month_day Card::generateDataExpirare() {
+    date::year_month_day act = date::floor<date::days>(std::chrono::system_clock::now());
+    return act + date::years{4};
 }
 
 const std::string Card::generateCvv() {
@@ -28,14 +28,14 @@ const std::string Card::generateCvv() {
 }
 
 Card::Card()
-    : cod(generateCod()),
-    dataExpirare(generateDataExpirare()),
+    : dataExpirare(generateDataExpirare()),
+    cod(generateCod()),
     cvv(generateCvv()) {
     std::cout << "Const " << *this << '\n';
 }
 
 Card::Card(const Card& other)
-    : cod(other.cod), dataExpirare(other.dataExpirare), cvv(other.cvv) {
+    : dataExpirare(other.dataExpirare), cod(other.cod), cvv(other.cvv) {
     std::cout << "Constr de copiere" << *this << "\n";
 }
 
@@ -46,8 +46,8 @@ std::ostream& operator<<(std::ostream& os, const Card& card) {
 
 Card& Card::operator=(const Card& other) {
     std::cout << "operator= " << *this << "\n";
-    cod = other.cod;
     dataExpirare = other.dataExpirare;
+    cod = other.cod;
     cvv = other.cvv;
     return *this;
 }
@@ -57,7 +57,13 @@ bool Card::operator==(const Card& other) const {
         other.cvv == this->cvv;
 }
 
-Card::~Card() { std::cout << "Destroing card" << *this << "\n"; }
+void Card::checkExpired() const {
+    if (date::floor<date::days>(std::chrono::system_clock::now()) > dataExpirare) {
+        throw ExpiredCard();
+    }
+}
+
+Card::~Card() { std::cout << "Destroing card: " << *this << "\n"; }
 
 // bool Card::checkCod(const std::string& codTry) {
 //     if (cod == codTry) {

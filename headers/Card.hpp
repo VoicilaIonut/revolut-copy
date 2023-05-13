@@ -2,16 +2,18 @@
 #define CARD_HPP
 
 #include <iostream>
+#include <date.h>
 
 #include "Currencies.hpp"
 #include "Tranzactie.hpp"
 
 class Card {
-    std::string cod, dataExpirare, cvv;
+    date::year_month_day dataExpirare;
+    std::string cod, cvv;
 
     const std::string generateCod();
 
-    const std::string generateDataExpirare();
+    const date::year_month_day generateDataExpirare();
 
     const std::string generateCvv();
 
@@ -25,6 +27,8 @@ public:
     Card& operator=(const Card& other);
 
     bool operator==(const Card& other) const;
+
+    void checkExpired() const;
 
     ~Card();
 

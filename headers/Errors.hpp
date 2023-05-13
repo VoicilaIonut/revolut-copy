@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "Currencies.hpp"
 
 class AppError : public std::runtime_error {
     using std::runtime_error::runtime_error;
@@ -12,32 +13,20 @@ public:
     explicit AccountError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
 };
 
-class UserError : public AppError { 
+class NoAmountOfMoneyInCurrency: public AccountError {
 public:
-    explicit UserError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
+    explicit NoAmountOfMoneyInCurrency(const float amount, const Currency& currency) : 
+    AccountError("Nu aveti suma de " +  std::to_string(amount) + " " + stringCurrency[currency] + " in contul dvs!.") {}
 };
 
-class NoAmountOfMoney: public AccountError {
+
+class CardError : public AppError { 
 public:
-    explicit NoAmountOfMoney(const std::string& mesaj) : 
-    AccountError("Nu aveti suma de bani in contul dvs!.") {}
+    explicit CardError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
 };
 
-class NoAmountOCurrency: public AccountError {
+class ExpiredCard : public CardError { 
 public:
-    explicit NoAmountOCurrency(const std::string& mesaj) : 
-    AccountError("Nu aveti currency-ul specificat in contul dvs. Depozitiati sau folositi exchange-ul!") {}
+    explicit ExpiredCard() :
+    CardError("Cardul pe care incercati sa il folositi este expirat!") { }
 };
-
-class InvalidCard :public AccountError {
-    explicit InvalidCard(const std::string& mesaj) : AccountError("Cardul specificat este invalid.") {}
-};
-
-class InvalidCurrency :public AccountError {
-    explicit InvalidCurrency(const std::string& currency) : AccountError("Currency ul " + currency + " nu este disponibil inca.") {}
-};
-
-class InvalidCnp :public UserError {
-    explicit InvalidCnp(const std::string& mesaj) : UserError("CNP-ul introdus nu este corect.") {}
-};
-

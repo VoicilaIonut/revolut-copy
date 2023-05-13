@@ -5,6 +5,7 @@
 
 #include "../headers/Card.hpp"
 #include "../headers/Tranzactie.hpp"
+#include "../headers/Errors.hpp"
 
 std::string Account::generareIban() {
     using Random = effolkronium::random_static;
@@ -56,12 +57,7 @@ bool Account::haveAmountOfCurrency(float amount, const Currency& currency) {
 }
 
 bool Account::haveCard(const Card& card_try) {
-    for (const Card& card : carduri) {
-        if (card == card_try) {
-            return true;
-        }
-    }
-    return false;
+    return std::find(carduri.begin(), carduri.end(), card_try) != carduri.end();
 }
 
 void Account::addFunds(float amount, const Currency& currency) {
@@ -73,26 +69,28 @@ void Account::addFunds(float amount, const Currency& currency) {
     }
 }
 
-bool Account::exchange(float amount, const Currency& currencyFrom,
+void Account::exchange(float amount, const Currency& currencyFrom,
     const Currency& currencyTo) {
-    if (haveAmountOfCurrency(amount, currencyFrom)) {
-        currencyAccount[currencyFrom] -= amount;
-        addFunds(amount, currencyTo);
-        return true;
+    if (!haveAmountOfCurrency(amount, currencyFrom)) {
+        throw NoAmountOfMoneyInCurrency(amount, currencyFrom);
     }
-    return false;
+    currencyAccount[currencyFrom] -= amount;
+    addFunds(amount, currencyTo);
 }
 
-bool Account::withdrawal(float amount, const Currency& currency) {
-    if (haveAmountOfCurrency(amount, currency)) {
-        currencyAccount[currency] -= amount;
-        return true;
+void Account::withdrawal(float amount, const Currency& currency) {
+    if (!haveAmountOfCurrency(amount, currency)) {
+        throw NoAmountOfMoneyInCurrency(amount, currency);
     }
-    return false;
+    currencyAccount[currency] -= amount;
 }
 
-bool Account::payWithCard(const Card& card, float amount,
-    const Currency& currency) {
+bool Account::payWithCard(const Card& card, float amount, const Currency& currency) {
+    try {
+        card.checkExpired();
+    } catch (ExpiredCard& err) {
+        std::cout << err.what() << '\n';
+    }
     amount = calculatePayAmountWithTax(amount);
     if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {
         currencyAccount[currency] -= amount;

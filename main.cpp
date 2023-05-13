@@ -11,11 +11,12 @@
 #include "headers/User.hpp"
 #include "headers/Account.hpp"
 #include "headers/SavingAccount.hpp"
+#include "headers/Errors.hpp"
 
 std::unordered_map<std::string, std::string> creareDateUser() {
     std::unordered_map<std::string, std::string> dateUser;
     dateUser["nume"] = "ion";
-    dateUser["cnp"] = "5020927000000";
+    dateUser["cnp"] = "4020927000000";
     // dateUser["iban"] = "42069";
     dateUser["email"] = "test@example";
     dateUser["numarTelefon"] = "0725293000";
@@ -27,7 +28,7 @@ void test() {
 
     User test_user1("Ion", "4020927000000", "test1@example", "0710000000");
     User copie_test_user1(test_user1);
-    User test_user2("Gigel", "3020927000000", "test2@example","0720000000");
+    User test_user2("Gigel", "3020927000000", "test2@example", "0720000000");
 
     std::string accountType = "Savings";
     test_user1.createAccount(accountType);
@@ -38,7 +39,7 @@ void test() {
 
     std::cout << "Testare afisare Account: \n" << *accountTestUser1 << '\n';
 
-    auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1); 
+    auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1);
     std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
 
     accountTestUser1->addFunds(1003, RON);
@@ -49,12 +50,21 @@ void test() {
     std::cout << "Testare clonare (trebuie sa dea diferit): \n" << *accountTestUser1 << '\n' << *cloneTest << "\n\n";
     //--- end testare clonare
 
-    accountTestUser1->withdrawal(1, RON);
-    accountTestUser1->exchange(1, RON, USD);
+    try {
+        accountTestUser1->withdrawal(10000000000, RON);
+    } catch (NoAmountOfMoneyInCurrency& err) {
+        std::cout << err.what() << '\n';
+    }
+
+    try {
+        accountTestUser1->withdrawal(1, RON);
+        accountTestUser1->exchange(1, RON, USD);
+    } catch (NoAmountOfMoneyInCurrency& err) {
+        std::cout << "Asta nu ar trebui sa se intample niciodata " << err.what() << '\n';
+    }
 
     test_user1.tryToAddNewCardWithCnp(dateUser["cnp"], accountTestUser1);
-    std::vector<Card> carduri_test_user =
-    accountTestUser1->getCards();
+    std::vector<Card> carduri_test_user = accountTestUser1->getCards();
     accountTestUser1->payWithCard(carduri_test_user.back(), 1, RON);
 
     Tranzactie test_tranzactie =
