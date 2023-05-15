@@ -12,6 +12,7 @@
 #include "headers/Account.hpp"
 #include "headers/SavingAccount.hpp"
 #include "headers/Errors.hpp"
+#include "headers/Server.hpp"
 
 std::unordered_map<std::string, std::string> creareDateUser() {
     std::unordered_map<std::string, std::string> dateUser;
@@ -73,7 +74,9 @@ void test() {
 }
 
 int main() {
-    test();
+    // test();
+    Server server;
+    server.start();
     return 0;
 }
 

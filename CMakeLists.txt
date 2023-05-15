@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.24)
 # for now, the project name is used as the executable name
 project(oop)
 
-# set(CMAKE_CXX_CPPCHECK "cppcheck") for local cppcheck
+# set(CMAKE_CXX_CPPCHECK "cppcheck") #for local cppcheck
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -83,7 +83,7 @@ find_package(Threads REQUIRED)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp src/Card.cpp src/Tranzactie.cpp src/User.cpp src/Account.cpp src/SavingAccount.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/Card.cpp src/Tranzactie.cpp src/User.cpp src/Account.cpp src/SavingAccount.cpp src/Server.cpp)
 
 ###############################################################################
 

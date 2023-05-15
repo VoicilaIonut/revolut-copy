@@ -10,23 +10,40 @@ class AppError : public std::runtime_error {
 
 class AccountError : public AppError {
 public:
-    explicit AccountError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
+    explicit AccountError(const std::string& mesaj) : AppError(std::move(mesaj)) {}
 };
 
-class NoAmountOfMoneyInCurrency: public AccountError {
+class NoAmountOfMoneyInCurrency : public AccountError {
 public:
-    explicit NoAmountOfMoneyInCurrency(const float amount, const Currency& currency) : 
-    AccountError("Nu aveti suma de " +  std::to_string(amount) + " " + stringCurrency[currency] + " in contul dvs!.") {}
+    explicit NoAmountOfMoneyInCurrency(const float amount, const Currency& currency) :
+        AccountError("Nu aveti suma de " + std::to_string(amount) + " " + stringCurrency[currency] + " in contul dvs!.") {}
 };
 
 
-class CardError : public AppError { 
+class CardError : public AppError {
 public:
-    explicit CardError(const std::string& mesaj) : AppError(std::move(mesaj)) { }
+    explicit CardError(const std::string& mesaj) : AppError(std::move(mesaj)) {}
 };
 
-class ExpiredCard : public CardError { 
+class ExpiredCard : public CardError {
 public:
     explicit ExpiredCard() :
-    CardError("Cardul pe care incercati sa il folositi este expirat!") { }
+        CardError("Cardul pe care incercati sa il folositi este expirat!") {}
+};
+
+class ServerError : public AppError {
+public:
+    explicit ServerError(const std::string& mesaj) : AppError(std::move(mesaj)) {}
+};
+
+class ExitChooserServer : public ServerError {
+public:
+    explicit ExitChooserServer() :
+        ServerError("Exit executat din Server Chooser") {}
+};
+
+class NoRegexFoundServer : public ServerError {
+public:
+    explicit NoRegexFoundServer(const std::string& option) :
+        ServerError("Not regex found for the option: " + option) {}
 };

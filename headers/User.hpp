@@ -43,6 +43,7 @@ public:
 
     bool tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account);
 
+    bool checkUserWithEmailAndCnp(const std::string& email_, const std::string&cnp_) const;
 };
 
 #endif

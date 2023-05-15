@@ -74,6 +74,9 @@ User::~User() {
 void User::createAccount(const std::string& typeOfAccount) {
   if (typeOfAccount == "Savings")
     accounts.emplace_back(std::make_shared<SavingAccount>());
+  else {
+    std::cout << "TypeOfAccount not founded\n";
+  }
 }
 
 bool User::tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account) {
@@ -82,4 +85,8 @@ bool User::tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Acc
     return true;
   }
   return false;
+}
+
+bool User::checkUserWithEmailAndCnp(const std::string& email_, const std::string& cnp_) const {
+  return (email == email_ && cnp == cnp_);
 }
