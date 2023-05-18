@@ -31,9 +31,9 @@ void test() {
     User copie_test_user1(test_user1);
     User test_user2("Gigel", "3020927000000", "test2@example", "0720000000");
 
-    std::string accountType = "Savings";
-    test_user1.createAccount(accountType);
-    test_user2.createAccount(accountType);
+    std::string accountTypeSavings = "Savings", accountTypeDebit = "Debit";
+    test_user1.createAccount(accountTypeSavings);
+    test_user2.createAccount(accountTypeDebit);
 
     std::shared_ptr<Account> accountTestUser1 = test_user1.getAccounts().front();
     std::shared_ptr<Account> accountTestUser2 = test_user2.getAccounts().front();
@@ -70,8 +70,7 @@ void test() {
 
     Tranzactie test_tranzactie =
         accountTestUser1->tryToMakeTransaction(accountTestUser2, 1000, RON);
-
-    std::cout << test_tranzactie;
+    std::cout << "Tranzactie fara taxe pentru contul debit pentru: \n" << test_tranzactie;
 }
 
 int main() {

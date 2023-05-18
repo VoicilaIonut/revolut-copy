@@ -6,6 +6,7 @@
 
 #include "../headers/Card.hpp"
 #include "../headers/Tranzactie.hpp"
+#include "../headers/DebitAccount.hpp"
 
 bool User::checkCnp(const std::string& testCnp) {
   if (cnp == testCnp) {
@@ -72,9 +73,11 @@ User::~User() {
 }
 
 void User::createAccount(const std::string& typeOfAccount) {
-  if (typeOfAccount == "Savings")
+  if (typeOfAccount == "Savings") {
     accounts.emplace_back(std::make_shared<SavingAccount>());
-  else {
+  } else if (typeOfAccount == "Debit") {
+    accounts.emplace_back(std::make_shared<DebitAccount>());
+  } else {
     std::cout << "TypeOfAccount not founded\n";
   }
 }
