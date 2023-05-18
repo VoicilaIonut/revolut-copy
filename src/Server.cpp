@@ -159,6 +159,7 @@ void Server::addAccount(const std::string& typeOfAccount) {
 }
 
 void Server::outUsers() const {
+    std::cout << "Users in databse: \n";
     for (const auto& user : users) {
         std::cout << user << '\n';
     }

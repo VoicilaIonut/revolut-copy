@@ -71,11 +71,13 @@ void test() {
     Tranzactie test_tranzactie =
         accountTestUser1->tryToMakeTransaction(accountTestUser2, 1000, RON);
 
+    std::cout << test_tranzactie;
 }
 
 int main() {
-    // test();
+    test();
     Server server;
+    server.outUsers();
     server.start();
     return 0;
 }
