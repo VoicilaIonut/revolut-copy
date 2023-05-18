@@ -104,6 +104,7 @@ void Account::addNewCard() {
 }
 
 Tranzactie Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount, const Currency& currency) {
+    amount = calculatePayAmountWithTax(amount);
     bool realizata = haveAmountOfCurrency(amount, currency);
     if (realizata) {
         currencyAccount[currency] -= amount;
