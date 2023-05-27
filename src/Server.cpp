@@ -20,18 +20,18 @@ std::vector<User> Server::users = {
 
 std::unordered_map<std::string, std::vector<std::string> > Server::menuOptions =
 {
-  { "Welcome", { "Login", "Register", "Exit"} },
-  { "Profil", { "Creeaza Account nou", "Sterge Account", "Logout", "Exit"}},
-  { "Creeaza Account nou", {"Savings", "Debit"}}
+  { "Start", { "Autentificare", "Inregistrare", "Iesire"} },
+  { "Profil", { "Creeaza un cont nou", "Sterge un cont existent", "Deconectare", "Iesire"}},
+  { "Creeaza un cont nou", {"Economii", "Debit"}}
 };
 
 std::unordered_map<std::string, std::regex> Server::regexRules =
 {
     {"CNP", std::regex("^\\d{13}$")},
-    {"Email", std::regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")},
-    {"Phone Number", std::regex("^\\d{10}$")},
+    {"Email", std::regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$")},
+    {"Numar de telefon", std::regex("^\\d{10}$")},
     {"Nume si prenume", std::regex("^[a-zA-Z ]+$")},
-    {"option", std::regex("^[0-9]+$")}
+    {"optiunea", std::regex("^[0-9]+$")}
 };
 
 
@@ -51,7 +51,7 @@ void Server::printOptions(const std::string& menu) const {
 std::string Server::readAndValidateWithRegex(std::string valueName) const {
     std::string value;
     while (true) {
-        std::cout << "Enter an " + valueName + " (or type -1 for exit): \n";
+        std::cout << "Va rugam introduceti " + valueName + ".\n";
         std::getline(std::cin, value);
 
         if (regexRules.find(valueName) == regexRules.end()) {
@@ -59,65 +59,58 @@ std::string Server::readAndValidateWithRegex(std::string valueName) const {
         }
 
         if (!std::regex_match(value, regexRules[valueName])) {
-            if (value == "-1")
-                throw ExitChooserServer();
-            std::cout << "Invalid " + valueName + ". Please enter a valid " + valueName + ".\n";
+            std::cout << "Optiunea " + valueName + " este invalida. Va rugam sa introduceti o " + valueName + " valida.\n";
             continue;
         }
 
-        std::cout << "You entered the " + valueName << " " << value << "\n";
+        std::cout << "Ati introdus " + valueName << ": " << value << "\n";
         return value;
     }
-    if (userLogat)
+    return "Start";
+}
+
+std::string Server::redirect() {
+    if (userLogat) {
         return "Profil";
-    return "Welcome";
+        // std::cout << Server::users[idxUserActual];
+    } else {
+        return "Start";
+    }
 }
 
 void Server::start() {
-    std::string actualMenu = "Welcome";
+    std::string actualMenu = "Start";
     while (true) {
         try {
-            if (actualMenu == "Exit") {
+            if (actualMenu == "Iesire") {
                 break;
-            } else if (actualMenu == "Register") {
+            } else if (actualMenu == "Inregistrare") {
                 registerr();
-                actualMenu = "Welcome";
-            } else if (actualMenu == "Login") {
+            } else if (actualMenu == "Autentificare") {
                 login();
-                if (userLogat) {
-                    actualMenu = "Profil";
-                    std::cout << Server::users[idxUserActual];
-                } else {
-                    actualMenu = "Welcome";
-                }
-            } else if (actualMenu == "Logout") {
+            } else if (actualMenu == "Deconectare") {
                 logout();
-                actualMenu = "Welcome";
-            } else if (actualMenu == "Savings" || actualMenu == "Debit") {
+            } else if (actualMenu == "Economii" || actualMenu == "Debit") {
                 addAccount(actualMenu);
-                actualMenu = "Profil";
+            } else if (actualMenu == "Sterge un cont existent") {
+                removeAccount();
             } else {
                 printOptions(actualMenu);
-                int option = std::stoi(readAndValidateWithRegex("option"));
+                int option = std::stoi(readAndValidateWithRegex("optiunea"));
                 if (option < 0 || option >= (int)menuOptions[actualMenu].size()) {
                     std::cout << "Optiune inexistenta. Mai incearca odata.\n";
                     continue;
                 }
                 actualMenu = menuOptions[actualMenu][option];
+                continue; // am schimbat meniul, nu mai trebuie sa dau redirect la final
             }
-        } catch (ExitChooserServer& err) {
-            std::cout << err.what();
-            if (userLogat) {
-                actualMenu = "Profil";
-            } else {
-                actualMenu = "Welcome";
-            }
+            actualMenu = redirect();
         } catch (NoRegexFoundServer& err) {
             std::cout << err.what();
-            actualMenu = "Welcome";
+            actualMenu = redirect();
         } catch (ServerError& err) {
             std::cout << err.what();
-            actualMenu = "Welcome";
+            actualMenu = redirect();
         }
         // outUsers();
     }
@@ -126,7 +119,7 @@ void Server::start() {
 void Server::registerr() {
     std::string nume = readAndValidateWithRegex("Nume si prenume");
     std::string cnp = readAndValidateWithRegex("CNP");
-    std::string numarTelefon = readAndValidateWithRegex("Phone Number");
+    std::string numarTelefon = readAndValidateWithRegex("Numar de telefon");
     std::string email = readAndValidateWithRegex("Email");
     users.push_back(User(nume, cnp, email, numarTelefon));
 }
@@ -138,7 +131,7 @@ void Server::login() {
         if (users[i].checkUserWithEmailAndCnp(email, cnp)) {
             idxUserActual = i;
             userLogat = true;
-            std::cout << "User logat cu succes. \n";
+            std::cout << "User deconectat cu succes. \n";
             return;
         }
     }
@@ -152,15 +145,33 @@ void Server::logout() {
 
 void Server::addAccount(const std::string& typeOfAccount) {
     if (!userLogat) {
-        std::cout << "Trebuie sa va logati!\n";
+        std::cout << "Trebuie sa va autentificati!\n";
         return;
     }
-    Server::users[idxUserActual].createAccount(typeOfAccount);
+    if (typeOfAccount == "Economii")
+        Server::users[idxUserActual].createAccount("Savings");
+    else if (typeOfAccount == "Debit")
+        Server::users[idxUserActual].createAccount("Debit");
 }
 
 void Server::outUsers() const {
-    std::cout << "Users in databse: \n";
+    std::cout << "Useri in baza de date: \n";
     for (const auto& user : users) {
         std::cout << user << '\n';
     }
+}
+
+void Server::removeAccount() {
+    std::vector<std::shared_ptr<Account>> accountsUser = users[idxUserActual].getAccounts();
+    std::cout << "Alegeti una dintre optiuni introducand cifra:\n";
+    for (int i = 0; i < (int)accountsUser.size(); ++i) {
+        std::cout << i << " -> " << *accountsUser[i] << '\n';
+    }
+    int option = std::stoi(readAndValidateWithRegex("optiunea"));
+    if (option < 0 || option >= (int)accountsUser.size()) {
+        std::cout << "Cont inexistenta. Mai incearca odata.\n";
+        return;
+    }
+    users[idxUserActual].removeAccount(option);
+    std::cout << "Cont sters cu succes\n";
 }

@@ -57,8 +57,7 @@ std::ostream& operator<<(std::ostream& os, const User& user) {
   // os << "User numar telefon: " << user.numarTelefon << '\n';
   if (user.accounts.empty()) {
     os << "The user has no accounts\n";
-  }
-  else {
+  } else {
     os << "User accounts: \n";
     for (auto account : user.accounts) {
       os << *account << '\n';
@@ -68,8 +67,7 @@ std::ostream& operator<<(std::ostream& os, const User& user) {
 }
 
 User::~User() {
-  std::cout << "Destroing User" << *this << "\n"
-    << *this;
+  std::cout << "Destroing User " << nume << " with a number of " << accounts.size() << " accounts.\n";
 }
 
 void User::createAccount(const std::string& typeOfAccount) {
@@ -78,8 +76,15 @@ void User::createAccount(const std::string& typeOfAccount) {
   } else if (typeOfAccount == "Debit") {
     accounts.emplace_back(std::make_shared<DebitAccount>());
   } else {
-    std::cout << "TypeOfAccount not founded\n";
+    std::cout << "TypeOfAccount not found\n";
   }
+}
+
+void User::removeAccount(const int& accountIndex) {
+  if (accountIndex < 0 || accountIndex >= (int)accounts.size()) {
+    return;
+  }
+  accounts.erase(accounts.begin() + accountIndex);
 }
 
 bool User::tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account) {

@@ -41,8 +41,9 @@ void test() {
     std::cout << "Testare afisare Account: \n" << *accountTestUser1 << '\n';
 
     auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1);
-    std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
-
+    if (x != NULL) {
+        std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
+    }
     accountTestUser1->addFunds(1003, RON);
 
     // --- testare clonare
@@ -52,16 +53,11 @@ void test() {
     //--- end testare clonare
 
     try {
-        accountTestUser1->withdrawal(10000000000, RON);
+        accountTestUser1->withdrawal(1, RON); // works
+        accountTestUser1->exchange(1, RON, USD); // works
+        accountTestUser1->withdrawal(10000000000, RON); // fails
     } catch (NoAmountOfMoneyInCurrency& err) {
         std::cout << err.what() << '\n';
-    }
-
-    try {
-        accountTestUser1->withdrawal(1, RON);
-        accountTestUser1->exchange(1, RON, USD);
-    } catch (NoAmountOfMoneyInCurrency& err) {
-        std::cout << "Asta nu ar trebui sa se intample niciodata " << err.what() << '\n';
     }
 
     test_user1.tryToAddNewCardWithCnp(dateUser["cnp"], accountTestUser1);

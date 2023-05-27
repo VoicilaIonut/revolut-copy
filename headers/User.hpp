@@ -39,11 +39,13 @@ public:
 
     void createAccount(const std::string& typeOfAccount);
 
+    void removeAccount(const int& accountIndex);
+
     std::vector<std::shared_ptr<Account>> getAccounts();
 
     bool tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account);
 
-    bool checkUserWithEmailAndCnp(const std::string& email_, const std::string&cnp_) const;
+    bool checkUserWithEmailAndCnp(const std::string& email_, const std::string& cnp_) const;
 };
 
 #endif

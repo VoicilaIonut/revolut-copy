@@ -22,8 +22,7 @@ class Server {
 
     std::string readAndValidateWithRegex(std::string valueName) const;
 
-public:
-    void start();
+    std::string redirect();
 
     void registerr();
 
@@ -33,6 +32,9 @@ public:
 
     void addAccount(const std::string& typeOfAccount);
 
-    void outUsers() const;
+    void removeAccount();
+public:
+    void start();
 
+    void outUsers() const;
 };

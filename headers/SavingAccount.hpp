@@ -17,7 +17,7 @@ class SavingAccount : public Account {
 
     void print(std::ostream& os) const override;
 
-    virtual float calculatePayAmountWithTax(const float& amount) const override;
+    float calculatePayAmountWithTax(const float& amount) const override;
 public:
     SavingAccount();
 

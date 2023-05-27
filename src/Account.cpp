@@ -90,6 +90,7 @@ bool Account::payWithCard(const Card& card, float amount, const Currency& curren
         card.checkExpired();
     } catch (ExpiredCard& err) {
         std::cout << err.what() << '\n';
+        return false;
     }
     amount = calculatePayAmountWithTax(amount);
     if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {

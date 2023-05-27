@@ -84,21 +84,22 @@ find_package(Threads REQUIRED)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME} main.cpp src/Card.cpp src/Tranzactie.cpp src/User.cpp src/Account.cpp src/SavingAccount.cpp src/Server.cpp src/DebitAccount.cpp)
 
-# cppcheck with flags for local machine
-# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# find_program(CPPCHECK cppcheck)
-# add_custom_command(TARGET oop POST_BUILD
-#   COMMAND ${CPPCHECK} --enable=all 
-#                     --inline-suppr 
-#                     --project="${CMAKE_SOURCE_DIR}/build"/compile_commands.json 
-#                     -i"${CMAKE_SOURCE_DIR}/build" --suppress='*:"${CMAKE_SOURCE_DIR}/build"/*' 
-#                     -i"${CMAKE_SOURCE_DIR}/build/ext" --suppress='*:"${CMAKE_SOURCE_DIR}/build/ext"/*' 
-#                     --suppress=missingIncludeSystem 
-#                     --suppress=unmatchedSuppression 
-#                     --suppress=useStlAlgorithm 
-#                     --error-exitcode=1
-#                     ${CMAKE_SOURCE_DIR}
-# )
+if (NOT GITHUB_ACTIONS) # cppcheck with flags for local machine
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    find_program(CPPCHECK cppcheck)
+    add_custom_command(TARGET oop POST_BUILD
+    COMMAND ${CPPCHECK} --enable=all 
+                        --inline-suppr 
+                        --project="${CMAKE_SOURCE_DIR}/build"/compile_commands.json 
+                        -i"${CMAKE_SOURCE_DIR}/build" --suppress='*:"${CMAKE_SOURCE_DIR}/build"/*' 
+                        -i"${CMAKE_SOURCE_DIR}/build/ext" --suppress='*:"${CMAKE_SOURCE_DIR}/build/ext"/*' 
+                        --suppress=missingIncludeSystem 
+                        --suppress=unmatchedSuppression 
+                        --suppress=useStlAlgorithm 
+                        --error-exitcode=1
+                        ${CMAKE_SOURCE_DIR}
+    )
+endif()
 ###############################################################################
 
 # target definitions

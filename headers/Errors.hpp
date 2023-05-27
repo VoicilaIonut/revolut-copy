@@ -36,14 +36,8 @@ public:
     explicit ServerError(const std::string& mesaj) : AppError(std::move(mesaj)) {}
 };
 
-class ExitChooserServer : public ServerError {
-public:
-    explicit ExitChooserServer() :
-        ServerError("Exit executat din Server Chooser") {}
-};
-
 class NoRegexFoundServer : public ServerError {
 public:
     explicit NoRegexFoundServer(const std::string& option) :
-        ServerError("Not regex found for the option: " + option) {}
+        ServerError("Optiune invalida: " + option) {}
 };
