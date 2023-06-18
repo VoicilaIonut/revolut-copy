@@ -6,25 +6,27 @@
 #include "Card.hpp"
 #include "Currencies.hpp"
 
-// the withdraws are made between the company account and the user account
+template <typename T>
 class Tranzactie {
     std::string ibanSender, ibanRecipient;
-    float value;
+    T value;
     Currency currency;
     bool realizata;
 
 public:
     Tranzactie(const std::string& ibanSender, const std::string& ibanRecipient,
-        float value_, const Currency& currency_, bool realizata_);
+        T value_, const Currency& currency_, bool realizata_);
 
-    Tranzactie(const Tranzactie& other);
+    Tranzactie(const Tranzactie<T>& other);
 
+    template <typename TT>
     friend std::ostream& operator<<(std::ostream& os,
-        const Tranzactie& tranzactie);
+        const Tranzactie<TT>& tranzactie);
 
-    Tranzactie& operator=(const Tranzactie& tranzactie);
+    Tranzactie<T>& operator=(const Tranzactie<T>& tranzactie);
 
     ~Tranzactie();
 };
 
+#include "../src/Tranzactie.cpp"
 #endif

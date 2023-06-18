@@ -84,7 +84,7 @@ find_package(Threads REQUIRED)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp src/Card.cpp src/Tranzactie.cpp src/User.cpp src/Account.cpp src/SavingAccount.cpp src/Server.cpp src/DebitAccount.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/Card.cpp src/User.cpp src/Account.cpp src/SavingAccount.cpp src/Server.cpp src/DebitAccount.cpp)
 
 if (NOT GITHUB_ACTIONS) # cppcheck with flags for local machine
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <type_traits>
 
 #include "Card.hpp"
 #include "Currencies.hpp"
@@ -54,10 +55,28 @@ public:
 
     bool haveCard(const Card& card) const;
 
-    Tranzactie tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount,
-        const Currency& currency);
+    template <
+        typename T,
+        typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+    >
+    Tranzactie<T> tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency);
 
     const std::vector<Card> getCards();
 };
+
+template <
+    typename T,
+    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+>
+Tranzactie<T> Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount,
+    const Currency& currency) {
+    amount = calculatePayAmountWithTax(amount);
+    bool realizata = haveAmountOfCurrency(amount, currency);
+    if (realizata) {
+        currencyAccount[currency] -= amount;
+        recipientAccount->addFunds(amount, currency);
+    }
+    return Tranzactie<T>(iban, recipientAccount->iban, amount, currency, realizata);
+}
 
 #endif

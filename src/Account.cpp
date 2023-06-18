@@ -103,16 +103,6 @@ void Account::addNewCard(const CardType& cardType) {
     carduri.push_back(CardFactory::cardBasic());
 }
 
-Tranzactie Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount, const Currency& currency) {
-    amount = calculatePayAmountWithTax(amount);
-    bool realizata = haveAmountOfCurrency(amount, currency);
-    if (realizata) {
-        currencyAccount[currency] -= amount;
-        recipientAccount->addFunds(amount, currency);
-    }
-    return Tranzactie(iban, recipientAccount->iban, amount, currency, realizata);
-}
-
 const std::vector<Card> Account::getCards() {
     return carduri;
 }

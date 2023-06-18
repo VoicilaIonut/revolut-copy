@@ -68,9 +68,17 @@ void test() {
     CardProxy cardProxy = CardProxy(accountTestUser1, carduri_test_user.back());
     cardProxy.pay(1, RON);
 
-    Tranzactie test_tranzactie =
+    Tranzactie<int> test_tranzactie =
         accountTestUser1->tryToMakeTransaction(accountTestUser2, 1000, RON);
     std::cout << "Tranzactie fara taxe pentru contul debit pentru: \n" << test_tranzactie;
+
+    Tranzactie<float> test_tranzactie1 =
+        accountTestUser1->tryToMakeTransaction(accountTestUser2, (float)0.1, RON);
+    std::cout << "Tranzactie fara taxe pentru contul debit pentru: \n" << test_tranzactie1;
+
+    Tranzactie<double> test_tranzactie2 =
+        accountTestUser1->tryToMakeTransaction(accountTestUser2, (double)0.999999, RON);
+    std::cout << "Tranzactie fara taxe pentru contul debit pentru: \n" << test_tranzactie2;
 }
 
 int main() {
@@ -80,68 +88,3 @@ int main() {
     server.start();
     return 0;
 }
-
-// maybe clasa pentru bancomat?
-// maybe loan class
-
-// Tema2
-// class AppAccount: public User {
-//     std::string username, password;
-
-//     std::string encryptPassword(const std::string& actualPassword) {
-//         std::string encryptedPassword = actualPassword; // TODO encrypt
-//         password. return encryptedPassword;
-//     }
-// public:
-//     AppAccount(const std::string& username_, const std::string& password_):
-//     username(username_), password(encryptPasswordpassword_) {
-//         std::cout << "AppAccount constructor\n" << *this << '\n';
-//     }
-
-//     AppAccount(const AppAccount& other): username(other.username),
-//     password(other.password) {
-//         std::cout << "Constr de copiere" << *this << "\n";
-//     }
-
-//     friend std::ostream& operator<<(std::ostream& os, const AppAccount&
-//     appAccount) {
-//         os << "Username: " << appAccount.username << '\n';
-//         os << "Encrypted password: " << [REDACTED] << '\n';
-//         return os;
-//     }
-
-//     AppAccount& operator=(const AppAccount& other) {
-//         std::cout << "operator=  " << *this << "\n";
-//         username = other.username;
-//         password = other.password;
-//         return *this;
-//     }
-
-//     ~AppAccount() {
-//         std::cout << "Destroying AppAccount" << *this << "\n";
-//     }
-
-//     bool verifyPassword(const std::string& passwordTry) {
-//         if (passwordTry == password) {
-//             return true;
-//         }
-//         return false;
-//     }
-
-//     bool schimbaParolaCuCnp(const std::string& testCnp, const std::string&
-//     newPassword) {
-//         if (checkCnp(testCnp)) {
-//             password = newPassword;
-//             return true;
-//         }
-//         return false;
-//     }
-
-//     bool tryToAddNewCard(const std::string& passwordTry) {
-//         if (verifyPassword(passwordTry)) {
-//             carduri.push_back(Card());
-//             return true;
-//         }
-//         return false;
-//     }
-// };
