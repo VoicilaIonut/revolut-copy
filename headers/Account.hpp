@@ -55,21 +55,15 @@ public:
 
     bool haveCard(const Card& card) const;
 
-    template <
-        typename T,
-        typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
-    >
+    template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
     Tranzactie<T> tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency);
 
     const std::vector<Card> getCards();
 };
 
-template <
-    typename T,
-    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
->
-Tranzactie<T> Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount,
-    const Currency& currency) {
+template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
+Tranzactie<T> Account::tryToMakeTransaction(std::shared_ptr<Account>&recipientAccount, T amount,
+    const Currency & currency) {
     amount = calculatePayAmountWithTax(amount);
     bool realizata = haveAmountOfCurrency(amount, currency);
     if (realizata) {
