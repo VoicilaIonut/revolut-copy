@@ -27,20 +27,25 @@ const std::string Card::generateCvv() {
     return cvvGenerated;
 }
 
-Card::Card()
-    : dataExpirare(generateDataExpirare()),
+Card::Card(const CardType& tip_, const double& cashBack_) :
+    dataExpirare(generateDataExpirare()),
     cod(generateCod()),
-    cvv(generateCvv()) {
+    cvv(generateCvv()),
+    cashBack(cashBack_),
+    tip(tip_) {
     std::cout << "Const " << *this << '\n';
 }
 
-Card::Card(const Card& other)
-    : dataExpirare(other.dataExpirare), cod(other.cod), cvv(other.cvv) {
+Card::Card(const Card& other) :
+    dataExpirare(other.dataExpirare),
+    cod(other.cod), cvv(other.cvv),
+    cashBack(other.cashBack),
+    tip(other.tip) {
     std::cout << "Constr de copiere" << *this << "\n";
 }
 
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << card.cod << " " << card.dataExpirare << " " << card.cvv << '\n';
+    os << card.tip << " " << card.cashBack << " " << card.cod << " " << card.dataExpirare << " " << card.cvv << '\n';
     return os;
 }
 
@@ -49,12 +54,17 @@ Card& Card::operator=(const Card& other) {
     dataExpirare = other.dataExpirare;
     cod = other.cod;
     cvv = other.cvv;
+    tip = other.tip;
+    cashBack = other.cashBack;
     return *this;
 }
 
 bool Card::operator==(const Card& other) const {
-    return other.cod == this->cod && other.dataExpirare == this->dataExpirare &&
-        other.cvv == this->cvv;
+    return other.cod == this->cod
+        && other.dataExpirare == this->dataExpirare
+        && other.cvv == this->cvv
+        && other.cashBack == this->cashBack
+        && other.tip == this->tip;
 }
 
 void Card::checkExpired() const {
@@ -63,34 +73,8 @@ void Card::checkExpired() const {
     }
 }
 
+double Card::getCashBack() const {
+    return cashBack;
+}
+
 Card::~Card() { std::cout << "Destroing card: " << *this << "\n"; }
-
-// bool Card::checkCod(const std::string& codTry) {
-//     if (cod == codTry) {
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool Card::checkDataExpirare(const std::string& dataExpirareTry) {
-//     if (dataExpirare == dataExpirareTry) {
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool Card::checkCvv(const std::string& cvvTry) {
-//     if (cvv == cvvTry) {
-//         return true;
-//     }
-//     return false;
-// }
-// const std::string Card::getCod() {
-//     return cod;
-// }
-// const std::string Card::getDataExpirare() {
-//     return dataExpirare;
-// }
-// const std::string Card::getCvv() {
-//     return cvv;
-// }

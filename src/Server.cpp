@@ -131,7 +131,7 @@ void Server::login() {
         if (users[i].checkUserWithEmailAndCnp(email, cnp)) {
             idxUserActual = i;
             userLogat = true;
-            std::cout << "User deconectat cu succes. \n";
+            std::cout << "User conectat cu succes.\n";
             return;
         }
     }

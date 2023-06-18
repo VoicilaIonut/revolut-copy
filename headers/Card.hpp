@@ -6,10 +6,13 @@
 
 #include "Currencies.hpp"
 #include "Tranzactie.hpp"
+#include "CardTypes.hpp"
 
 class Card {
     date::year_month_day dataExpirare;
     std::string cod, cvv;
+    double cashBack;
+    CardType tip;
 
     const std::string generateCod();
 
@@ -18,7 +21,7 @@ class Card {
     const std::string generateCvv();
 
 public:
-    Card();
+    Card(const CardType& tip_, const double& cashBack_);
 
     Card(const Card& other);
 
@@ -29,6 +32,8 @@ public:
     bool operator==(const Card& other) const;
 
     void checkExpired() const;
+
+    double getCashBack() const;
 
     ~Card();
 

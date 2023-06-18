@@ -1,3 +1,6 @@
+#ifndef SERVER_HPP
+#define SERVER_HPP
+
 #include <string>
 #include <iostream>
 #include <unordered_map>
@@ -38,3 +41,5 @@ public:
 
     void outUsers() const;
 };
+
+#endif

@@ -23,8 +23,7 @@ std::ostream& operator<<(std::ostream& os, const Account& account) {
     os << "Account iban: " << account.iban << '\n';
     if (account.currencyAccount.empty()) {
         os << "Account has no currency accounts\n";
-    }
-    else {
+    } else {
         for (auto it = account.currencyAccount.begin();
             it != account.currencyAccount.end(); ++it) {
             os << "Account currency: " << it->first << " " << it->second << '\n';
@@ -32,8 +31,7 @@ std::ostream& operator<<(std::ostream& os, const Account& account) {
     }
     if (account.carduri.empty()) {
         os << "Account has no cards\n";
-    }
-    else {
+    } else {
         for (auto it = account.carduri.begin(); it != account.carduri.end(); ++it) {
             os << "Account carduri: " << *it << '\n';
         }
@@ -56,15 +54,10 @@ bool Account::haveAmountOfCurrency(float amount, const Currency& currency) {
     return false;
 }
 
-bool Account::haveCard(const Card& card_try) {
-    return std::find(carduri.begin(), carduri.end(), card_try) != carduri.end();
-}
-
 void Account::addFunds(float amount, const Currency& currency) {
     if (haveCurrency(currency)) {
         currencyAccount[currency] += amount;
-    }
-    else {
+    } else {
         currencyAccount[currency] = amount;
     }
 }
@@ -85,23 +78,29 @@ void Account::withdrawal(float amount, const Currency& currency) {
     currencyAccount[currency] -= amount;
 }
 
+// Throws ExpiredCard if called with a expired card. 
 bool Account::payWithCard(const Card& card, float amount, const Currency& currency) {
-    try {
-        card.checkExpired();
-    } catch (ExpiredCard& err) {
-        std::cout << err.what() << '\n';
-        return false;
-    }
+    card.checkExpired();
     amount = calculatePayAmountWithTax(amount);
-    if (haveCard(card) && haveAmountOfCurrency(amount, currency)) {
+    if (haveAmountOfCurrency(amount, currency)) {
         currencyAccount[currency] -= amount;
+        currencyAccount[currency] += amount * card.getCashBack();
         return true;
     }
     return false;
 }
 
-void Account::addNewCard() {
-    carduri.push_back(Card());
+bool Account::haveCard(const Card& card) const {
+    return std::find(carduri.begin(), carduri.end(), card) != carduri.end();
+}
+
+void Account::addNewCard(const CardType& cardType) {
+    if (cardType == Gold) {
+        carduri.push_back(CardFactory::cardGold());
+    } else if (cardType == Silver) {
+        carduri.push_back(CardFactory::cardSilver());
+    }
+    carduri.push_back(CardFactory::cardBasic());
 }
 
 Tranzactie Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount, const Currency& currency) {

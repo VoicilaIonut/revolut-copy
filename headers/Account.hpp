@@ -10,6 +10,7 @@
 #include "Card.hpp"
 #include "Currencies.hpp"
 #include "Tranzactie.hpp"
+#include "CardFactory.hpp"
 
 class Account {
 private:
@@ -32,8 +33,6 @@ protected:
 
     bool haveAmountOfCurrency(float amount, const Currency& currency);
 
-    bool haveCard(const Card& card_try);
-
     std::string generareIban();
 
     virtual float calculatePayAmountWithTax(const float& amount)const = 0;
@@ -49,9 +48,11 @@ public:
 
     void withdrawal(float amount, const Currency& currency);
 
-    void addNewCard();
+    void addNewCard(const CardType& cardType = Basic);
 
     bool payWithCard(const Card& card, float amount, const Currency& currency);
+
+    bool haveCard(const Card& card) const;
 
     Tranzactie tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, float amount,
         const Currency& currency);

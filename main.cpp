@@ -13,6 +13,8 @@
 #include "headers/SavingAccount.hpp"
 #include "headers/Errors.hpp"
 #include "headers/Server.hpp"
+#include "headers/CardTypes.hpp"
+#include "headers/AccountProxy.hpp"
 
 std::unordered_map<std::string, std::string> creareDateUser() {
     std::unordered_map<std::string, std::string> dateUser;
@@ -41,7 +43,7 @@ void test() {
     std::cout << "Testare afisare Account: \n" << *accountTestUser1 << '\n';
 
     auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1);
-    if (x != NULL) {
+    if (x != nullptr) {
         std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
     }
     accountTestUser1->addFunds(1003, RON);
@@ -55,14 +57,16 @@ void test() {
     try {
         accountTestUser1->withdrawal(1, RON); // works
         accountTestUser1->exchange(1, RON, USD); // works
-        accountTestUser1->withdrawal(10000000000, RON); // fails
+        accountTestUser1->withdrawal(10000000000.0f, RON); // fails
     } catch (NoAmountOfMoneyInCurrency& err) {
         std::cout << err.what() << '\n';
     }
 
     test_user1.tryToAddNewCardWithCnp(dateUser["cnp"], accountTestUser1);
     std::vector<Card> carduri_test_user = accountTestUser1->getCards();
-    accountTestUser1->payWithCard(carduri_test_user.back(), 1, RON);
+
+    CardProxy cardProxy = CardProxy(accountTestUser1, carduri_test_user.back());
+    cardProxy.pay(1, RON);
 
     Tranzactie test_tranzactie =
         accountTestUser1->tryToMakeTransaction(accountTestUser2, 1000, RON);

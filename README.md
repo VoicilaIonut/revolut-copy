@@ -48,7 +48,7 @@ O incercare de server bancar cu o viitoare interfata pentru useri (in consola sa
 ## Tema 3
 
 #### Cerințe
-- [ ] 2 șabloane de proiectare (design patterns)
+- [x] 2 șabloane de proiectare (design patterns)
 - [ ] o funcție șablon (template) cu sens; minim 2 instanțieri
 - [ ] o clasă șablon cu sens; minim 2 instanțieri
 <!-- - [ ] o specializare pe funcție/clasă șablon -->
