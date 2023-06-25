@@ -18,7 +18,7 @@ const std::string Card::generateCod() {
 
 const date::year_month_day Card::generateDataExpirare() {
     date::year_month_day act = date::floor<date::days>(std::chrono::system_clock::now());
-    return act + date::years{4};
+    return act + date::years { 4 };
 }
 
 const std::string Card::generateCvv() {
@@ -27,44 +27,39 @@ const std::string Card::generateCvv() {
     return cvvGenerated;
 }
 
-Card::Card(const CardType& tip_, const double& cashBack_) :
+Card::Card(const std::string& ownerName_, const double& cashBack_, const CardType& tip_, const std::string& accountNumber_) :
     dataExpirare(generateDataExpirare()),
     cod(generateCod()),
     cvv(generateCvv()),
+    ownerName(ownerName_),
     cashBack(cashBack_),
-    tip(tip_) {
+    tip(tip_),
+    accountNumber(accountNumber_) {
     std::cout << "Const " << *this << '\n';
 }
 
-Card::Card(const Card& other) :
-    dataExpirare(other.dataExpirare),
-    cod(other.cod), cvv(other.cvv),
-    cashBack(other.cashBack),
-    tip(other.tip) {
-    std::cout << "Constr de copiere" << *this << "\n";
-}
 
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << card.tip << " " << card.cashBack << " " << card.cod << " " << card.dataExpirare << " " << card.cvv << '\n';
+    os << card.dataExpirare << " ";
+    os << card.cod << " ";
+    os << card.cvv;
+    os << " Owner: " << card.ownerName;
+    os << " Cash back: " << card.cashBack;
+    os << " Tip card: " << card.tip;
+    os << " Numar cont: " << card.accountNumber;
+    os << '\n';
     return os;
 }
 
-Card& Card::operator=(const Card& other) {
-    std::cout << "operator= " << *this << "\n";
-    dataExpirare = other.dataExpirare;
-    cod = other.cod;
-    cvv = other.cvv;
-    tip = other.tip;
-    cashBack = other.cashBack;
-    return *this;
-}
 
 bool Card::operator==(const Card& other) const {
-    return other.cod == this->cod
-        && other.dataExpirare == this->dataExpirare
+    return other.dataExpirare == this->dataExpirare
+        && other.cod == this->cod
         && other.cvv == this->cvv
+        && other.ownerName == this->ownerName
         && other.cashBack == this->cashBack
-        && other.tip == this->tip;
+        && other.tip == this->tip
+        && other.accountNumber == this->accountNumber;
 }
 
 void Card::checkExpired() const {

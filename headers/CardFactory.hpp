@@ -10,9 +10,9 @@
 
 class CardFactory {
 public:
-    static Card cardGold() { return Card(Gold, 1); }
-    static Card cardSilver() { return Card(Silver, 0.5); }
-    static Card cardBasic() { return Card(Basic, 0); }
+    static Card cardGold(const std::string& ownerName, const std::string& accountNumber) { return Card(ownerName, 1, Gold, accountNumber); }
+    static Card cardSilver(const std::string& ownerName, const std::string& accountNumber) { return Card(ownerName, 0.5, Silver, accountNumber); }
+    static Card cardBasic(const std::string& ownerName, const std::string& accountNumber) { return Card(ownerName, 0, Basic, accountNumber); }
 };
 
 #endif

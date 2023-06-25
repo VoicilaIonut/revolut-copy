@@ -94,13 +94,13 @@ bool Account::haveCard(const Card& card) const {
     return std::find(carduri.begin(), carduri.end(), card) != carduri.end();
 }
 
-void Account::addNewCard(const CardType& cardType) {
+void Account::addNewCard(const std::string& ownerName, const CardType& cardType) {
     if (cardType == Gold) {
-        carduri.push_back(CardFactory::cardGold());
+        carduri.push_back(CardFactory::cardGold(ownerName, iban));
     } else if (cardType == Silver) {
-        carduri.push_back(CardFactory::cardSilver());
+        carduri.push_back(CardFactory::cardSilver(ownerName, iban));
     }
-    carduri.push_back(CardFactory::cardBasic());
+    carduri.push_back(CardFactory::cardBasic(ownerName, iban));
 }
 
 const std::vector<Card> Account::getCards() {

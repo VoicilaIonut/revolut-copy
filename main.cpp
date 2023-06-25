@@ -65,8 +65,13 @@ void test() {
     test_user1.tryToAddNewCardWithCnp(dateUser["cnp"], accountTestUser1);
     std::vector<Card> carduri_test_user = accountTestUser1->getCards();
 
-    CardProxy cardProxy = CardProxy(accountTestUser1, carduri_test_user.back());
-    cardProxy.pay(1, RON);
+    AccountProxy accountProxy = AccountProxy(accountTestUser1, carduri_test_user.back());
+    try {
+        accountProxy.pay(1, RON);
+    } catch (CardError& err) {
+        std::cout << err.what() << '\n';
+    }
+    accountProxy.makeTransaction(accountTestUser2, 0, RON);
 
     Tranzactie<int> test_tranzactie =
         accountTestUser1->tryToMakeTransaction(accountTestUser2, 1000, RON);

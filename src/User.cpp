@@ -89,7 +89,7 @@ void User::removeAccount(const int& accountIndex) {
 
 bool User::tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account) {
   if (checkCnp(cnpTry)) {
-    account->addNewCard();
+    account->addNewCard(nume);
     return true;
   }
   return false;

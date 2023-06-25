@@ -49,7 +49,7 @@ public:
 
     void withdrawal(float amount, const Currency& currency);
 
-    void addNewCard(const CardType& cardType = Basic);
+    void addNewCard(const std::string& ownerName, const CardType& cardType = Basic);
 
     bool payWithCard(const Card& card, float amount, const Currency& currency);
 
@@ -62,8 +62,8 @@ public:
 };
 
 template <typename T>
-std::enable_if_t<std::is_arithmetic<T>::value, Tranzactie<T>> Account::tryToMakeTransaction(std::shared_ptr<Account>&recipientAccount, T amount,
-    const Currency & currency) {
+std::enable_if_t<std::is_arithmetic<T>::value, Tranzactie<T>> Account::tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount,
+    const Currency& currency) {
     amount = calculatePayAmountWithTax(amount);
     bool realizata = haveAmountOfCurrency(amount, currency);
     if (realizata) {

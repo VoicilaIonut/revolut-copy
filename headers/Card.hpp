@@ -10,9 +10,10 @@
 
 class Card {
     date::year_month_day dataExpirare;
-    std::string cod, cvv;
+    std::string cod, cvv, ownerName;
     double cashBack;
     CardType tip;
+    std::string accountNumber;
 
     const std::string generateCod();
 
@@ -21,13 +22,13 @@ class Card {
     const std::string generateCvv();
 
 public:
-    Card(const CardType& tip_, const double& cashBack_);
+    Card(const std::string& ownerName_, const double& cashBack_, const CardType& tip_, const std::string& accountNumber_);
 
-    Card(const Card& other);
+    Card(const Card& other) = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Card& card);
 
-    Card& operator=(const Card& other);
+    Card& operator=(const Card& other) = default;
 
     bool operator==(const Card& other) const;
 

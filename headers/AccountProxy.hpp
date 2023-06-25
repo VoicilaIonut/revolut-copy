@@ -1,37 +1,48 @@
-#ifndef CARDPROXY_HPP
-#define CARDPROXY_HPP
+#ifndef ACCOUNTPROXY_HPP
+#define ACCOUNTPROXY_HPP
 
 #include "Server.hpp"
+#include "Tranzactie.hpp"
 #include <memory>
 
-class CardProxy {
+class AccountProxy {
     std::shared_ptr<Account> account;
     Card card;
 
-    void printResponse(const bool& response) {
-        if (response) {
-            std::cout << "Allowed\n";
+public:
+    AccountProxy(std::shared_ptr<Account> account_, const Card& card_) : account(account_), card(card_) {};
+
+    AccountProxy(const AccountProxy& other) : account(other.account->clone()), card(other.card) {}
+
+    AccountProxy& operator=(AccountProxy other) {
+        swap(*this, other);
+        return *this;
+    }
+
+    friend void swap(AccountProxy& user1, AccountProxy& user2) {
+        using std::swap;
+        swap(user1.account, user2.account);
+        swap(user1.card, user2.card);
+    }
+
+    // Throws ExpiredCard if called with a expired card because it calls payWithCard. 
+    void pay(const float amount, const Currency& currency) {
+        if (account->haveCard(card)) {
+            if (account->payWithCard(card, amount, currency)) {
+                std::cout << "Allowed\n";
+            }
         } else {
             std::cout << "Not allowed\n";
         }
-    };
+    }
 
-public:
-    CardProxy(std::shared_ptr<Account> account_, const Card& card_) : account(account_), card(card_) {};
-
-    void pay(const float amount, const Currency& currency) {
-        bool answer = false;
-        if (account->haveCard(card)) {
-            try {
-                answer = account->payWithCard(card, amount, currency);
-            } catch (ExpiredCard& err) {
-                std::cout << err.what() << '\n';
-            }
+    template <typename T>
+    std::enable_if_t<std::is_arithmetic<T>::value, void> makeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency) {
+        if (std::is_arithmetic<decltype(amount)>::value) {
+            account->tryToMakeTransaction(recipientAccount, amount, currency);
+            std::cout << "Allowed\n";
         }
-        printResponse(answer);
-        if (answer) {
-            std::cout << "Paid " << amount << " " << stringCurrency[currency] << '\n';
-        }
+        std::cout << "Not allowed\n";
     }
 };
 
