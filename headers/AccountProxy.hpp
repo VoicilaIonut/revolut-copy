@@ -7,10 +7,10 @@
 
 class AccountProxy {
     std::shared_ptr<Account> account;
-    Card card;
+    std::shared_ptr<Card> card;
 
 public:
-    AccountProxy(std::shared_ptr<Account> account_, const Card& card_) : account(account_), card(card_) {};
+    AccountProxy(std::shared_ptr<Account> account_, std::shared_ptr<Card> card_) : account(account_), card(card_) {};
 
     AccountProxy(const AccountProxy& other) : account(other.account->clone()), card(other.card) {}
 
@@ -27,22 +27,26 @@ public:
 
     // Throws ExpiredCard if called with a expired card because it calls payWithCard. 
     void pay(const float amount, const Currency& currency) {
-        if (account->haveCard(card)) {
-            if (account->payWithCard(card, amount, currency)) {
-                std::cout << "Allowed\n";
+        if (account->haveCard(*card)) {
+            if (account->payWithCard(*card, amount, currency)) {
+                std::cout << "Plata permisa si efectuata cu succes\n";
+            } else {
+                std::cout << "Plata nu s-a putut efectua\n";
             }
         } else {
-            std::cout << "Not allowed\n";
+            std::cout << "Operatie nepermisa!\n";
         }
     }
 
     template <typename T>
     void makeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency) {
         if (std::is_arithmetic<decltype(amount)>::value) {
-            account->tryToMakeTransaction(recipientAccount, amount, currency);
-            std::cout << "Allowed\n";
+            std::cout << "Tranzactie permisa\n";
+            auto transaction = account->tryToMakeTransaction(recipientAccount, amount, currency);
+            std::cout << "Detalii tranzactie: \n" << transaction << '\n';
+            return;
         }
-        std::cout << "Not allowed\n";
+        std::cout << "Tranzactie nepermisa\n";
     }
 };
 

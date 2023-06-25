@@ -36,7 +36,9 @@ protected:
 
     std::string generareIban();
 
-    virtual float calculatePayAmountWithTax(const float& amount)const = 0;
+    virtual float calculatePayAmountWithTax(const float& amount) const = 0;
+
+    virtual float calculateWithdraw(const float& amount) const = 0;
 public:
     virtual std::shared_ptr<Account> clone() const = 0;
 
@@ -58,7 +60,9 @@ public:
     template <typename T>
     std::enable_if_t<std::is_arithmetic<T>::value, Tranzactie<T>> tryToMakeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency);
 
-    const std::vector<Card> getCards();
+    std::vector<Card> getCards() const;
+
+    bool checkIban(const std::string& iban_) const;
 };
 
 template <typename T>

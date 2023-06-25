@@ -13,11 +13,14 @@
 
 class SavingAccount : public Account {
     static float interestRate;
-    float taxToUseMoney = 0.1f;
+    float taxToTransfer = 0.1f;
+    float taxToWithdraw = 0.2f;
 
     void print(std::ostream& os) const override;
 
     float calculatePayAmountWithTax(const float& amount) const override;
+
+    float calculateWithdraw(const float& amount) const override;
 public:
     SavingAccount();
 

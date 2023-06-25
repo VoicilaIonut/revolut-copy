@@ -9,9 +9,9 @@
 
 std::string Account::generareIban() {
     using Random = effolkronium::random_static;
-    return "RO" + std::to_string(Random::get(1000, 9999)) + ' ' +
-        std::to_string(Random::get(1000, 9999)) + ' ' +
-        std::to_string(Random::get(1000, 9999)) + ' ' +
+    return "RO" + std::to_string(Random::get(1000, 9999)) +
+        std::to_string(Random::get(1000, 9999)) +
+        std::to_string(Random::get(1000, 9999)) +
         std::to_string(Random::get(1000, 9999));
 }
 
@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& os, const Account& account) {
     } else {
         for (auto it = account.currencyAccount.begin();
             it != account.currencyAccount.end(); ++it) {
-            os << "Account currency: " << it->first << " " << it->second << '\n';
+            os << "Account currency: " << stringCurrency[it->first] << " " << it->second << '\n';
         }
     }
     if (account.carduri.empty()) {
@@ -71,7 +71,9 @@ void Account::exchange(float amount, const Currency& currencyFrom,
     addFunds(amount, currencyTo);
 }
 
+// Throws NoAmountOfMoneyInCurrency if there is not enough money in the account
 void Account::withdrawal(float amount, const Currency& currency) {
+    amount = calculateWithdraw(amount);
     if (!haveAmountOfCurrency(amount, currency)) {
         throw NoAmountOfMoneyInCurrency(amount, currency);
     }
@@ -99,10 +101,15 @@ void Account::addNewCard(const std::string& ownerName, const CardType& cardType)
         carduri.push_back(CardFactory::cardGold(ownerName, iban));
     } else if (cardType == Silver) {
         carduri.push_back(CardFactory::cardSilver(ownerName, iban));
+    } else {
+        carduri.push_back(CardFactory::cardBasic(ownerName, iban));
     }
-    carduri.push_back(CardFactory::cardBasic(ownerName, iban));
 }
 
-const std::vector<Card> Account::getCards() {
+std::vector<Card> Account::getCards() const {
     return carduri;
+}
+
+bool Account::checkIban(const std::string& iban_) const {
+    return this->iban == iban_;
 }

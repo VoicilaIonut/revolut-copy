@@ -41,6 +41,10 @@ User& User::operator=(User other) {
   return *this;
 }
 
+bool User::operator==(const User& other) {
+  return this->cnp == other.cnp;
+}
+
 void swap(User& user1, User& user2) {
   using std::swap;
   swap(user1.nume, user2.nume);
@@ -97,4 +101,22 @@ bool User::tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Acc
 
 bool User::checkUserWithEmailAndCnp(const std::string& email_, const std::string& cnp_) const {
   return (email == email_ && cnp == cnp_);
+}
+
+std::string User::getName() const {
+  return nume;
+}
+
+// std::shared_ptr<Account> User::getAccountWithIban(std::string& iban) const {
+//   return std::find(accounts.begin(), accounts.end(), iban);
+// };
+
+
+std::shared_ptr<Account> User::getAccountWithIban(const std::string& iban) const {
+  for (auto& account : accounts) {
+    if (account->checkIban(iban)) {
+      return account;
+    }
+  }
+  return nullptr;
 }

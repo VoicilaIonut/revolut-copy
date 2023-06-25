@@ -50,7 +50,7 @@ void test() {
 
     // --- testare clonare
     std::shared_ptr<Account> cloneTest = accountTestUser1->clone();
-    cloneTest->withdrawal(1002, RON);
+    cloneTest->withdrawal(1, RON);
     std::cout << "Testare clonare (trebuie sa dea diferit): \n" << *accountTestUser1 << '\n' << *cloneTest << "\n\n";
     //--- end testare clonare
 
@@ -65,7 +65,7 @@ void test() {
     test_user1.tryToAddNewCardWithCnp(dateUser["cnp"], accountTestUser1);
     std::vector<Card> carduri_test_user = accountTestUser1->getCards();
 
-    AccountProxy accountProxy = AccountProxy(accountTestUser1, carduri_test_user.back());
+    AccountProxy accountProxy = AccountProxy(accountTestUser1, std::make_shared<Card>(carduri_test_user.back()));
     try {
         accountProxy.pay(1, RON);
     } catch (CardError& err) {

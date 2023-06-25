@@ -72,4 +72,3 @@ double Card::getCashBack() const {
     return cashBack;
 }
 
-Card::~Card() { std::cout << "Destroing card: " << *this << "\n"; }

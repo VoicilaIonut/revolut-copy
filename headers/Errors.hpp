@@ -41,3 +41,9 @@ public:
     explicit NoRegexFoundServer(const std::string& option) :
         ServerError("Optiune invalida: " + option) {}
 };
+
+class ToManyInvalidInputs : public ServerError {
+public:
+    explicit ToManyInvalidInputs() :
+        ServerError("Prea multe incercari invalide.") {}
+};

@@ -22,3 +22,7 @@ std::shared_ptr<Account> DebitAccount::clone() const {
 float DebitAccount::calculatePayAmountWithTax(const float& amount) const {
     return amount;
 }
+
+float DebitAccount::calculateWithdraw(const float& amount) const {
+    return amount;
+}

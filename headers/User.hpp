@@ -31,6 +31,8 @@ public:
 
     User& operator=(User other);
 
+    bool operator==(const User& other);
+
     friend void swap(User& user1, User& user2);
 
     friend std::ostream& operator<<(std::ostream& os, const User& user);
@@ -46,6 +48,11 @@ public:
     bool tryToAddNewCardWithCnp(const std::string& cnpTry, std::shared_ptr<Account>& account);
 
     bool checkUserWithEmailAndCnp(const std::string& email_, const std::string& cnp_) const;
+
+    std::string getName() const;
+
+    //Returns nullptr if no account is found with this iban.
+    std::shared_ptr<Account> getAccountWithIban(const std::string& iban) const;
 };
 
 #endif

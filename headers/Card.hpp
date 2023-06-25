@@ -36,7 +36,7 @@ public:
 
     double getCashBack() const;
 
-    ~Card();
+    ~Card() = default;
 
     // bool checkCod(const std::string& codTry);
     // bool checkDataExpirare(const std::string& dataExpirareTry);

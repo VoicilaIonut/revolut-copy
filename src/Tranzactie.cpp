@@ -41,5 +41,5 @@ Tranzactie<T>& Tranzactie<T>::operator=(const Tranzactie<T>& tranzactie) {
 
 template <typename T>
 Tranzactie<T>::~Tranzactie() {
-    std::cout << "Destroing Tranzactie" << *this << "\n";
+    std::cout << "Destroing Tranzactie \n";
 }

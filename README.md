@@ -1,5 +1,13 @@
 # OOP Revolut-copy Project
  
+### If you want to test my app.
+The "database" has a test user introduced at the beginning on which you can use the functionalities:
+The test user details:
+User gmail: "t@t"
+User name: "tester"
+User cnp: "1234567890123"
+User phone number: "0710000000"
+
 ### Tema 0
 
 - [x] Nume proiect (poate fi schimbat ulterior)
@@ -43,7 +51,7 @@ O incercare de server bancar cu o viitoare interfata pentru useri (in consola sa
 - [x] STL
 - [x] cât mai multe `const`
 - [x] la sfârșit: commit separat cu adăugarea unei noi derivate fără a modifica restul codului
-- [ ] tag de `git`: de exemplu `v0.2`
+- [x] tag de `git`: de exemplu `v0.2`
 
 ## Tema 3
 
@@ -52,8 +60,10 @@ O incercare de server bancar cu o viitoare interfata pentru useri (in consola sa
 - [x] o funcție șablon (template) cu sens; minim 2 instanțieri
 - [x] o clasă șablon cu sens; minim 2 instanțieri
 <!-- - [ ] o specializare pe funcție/clasă șablon -->
-- [ ] tag de `git`: de exemplu `v0.3` sau `v1.0`
+- [x] tag de `git`: de exemplu `v0.3` sau `v1.0`
 
 ## Resurse
 
-- adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
+bard.google.com
+chatgpt
+stackoverflow

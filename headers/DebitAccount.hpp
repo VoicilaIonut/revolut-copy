@@ -15,6 +15,8 @@ class DebitAccount : public Account {
     void print(std::ostream& os) const override;
 
     float calculatePayAmountWithTax(const float& amount) const override;
+
+    float calculateWithdraw(const float& amount) const override;
 public:
     DebitAccount();
 
