@@ -37,7 +37,7 @@ public:
     }
 
     template <typename T>
-    std::enable_if_t<std::is_arithmetic<T>::value, void> makeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency) {
+    void makeTransaction(std::shared_ptr<Account>& recipientAccount, T amount, const Currency& currency) {
         if (std::is_arithmetic<decltype(amount)>::value) {
             account->tryToMakeTransaction(recipientAccount, amount, currency);
             std::cout << "Allowed\n";
