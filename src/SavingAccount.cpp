@@ -8,17 +8,17 @@
 float SavingAccount::interestRate = 0.05f;
 
 void SavingAccount::print(std::ostream& os) const {
-    os << "Type: Saving Account\n";
-    os << "Tax to withdraw the money: " << taxToWithdraw << '\n';
-    os << "Tax to use (transfer/payments) the money: " << taxToTransfer << '\n';
+    os << "Tipul contului: Cont de economii.\n";
+    os << "Taxa pentru a efectua o retragere: " << taxToWithdraw << '\n';
+    os << "Taxa pentru a utiliza (a transfera sau a face o plata cu) o suma de bani: " << taxToTransfer << '\n';
 }
 
 SavingAccount::SavingAccount() : Account() {
-    std::cout << "Constr saving account\n";
+    std::cout << "Constructor cont de ecnomii.\n";
 }
 
 std::shared_ptr<Account> SavingAccount::clone() const {
-    std::cout << "clonare saving account\n";
+    std::cout << "Clonare cont de ecnomii.\n";
     return std::make_shared<SavingAccount>(*this);
 }
 

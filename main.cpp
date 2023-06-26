@@ -44,7 +44,7 @@ void test() {
 
     auto x = std::dynamic_pointer_cast<SavingAccount>(accountTestUser1);
     if (x != nullptr) {
-        std::cout << "value with interest rate: " << x->computeValueWithInterestRate(1003) << '\n';
+        std::cout << "Valoare cu dobanda: " << x->computeValueWithInterestRate(1003) << '\n';
     }
     accountTestUser1->addFunds(1003, RON);
 

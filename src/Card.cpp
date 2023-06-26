@@ -35,16 +35,16 @@ Card::Card(const std::string& ownerName_, const double& cashBack_, const CardTyp
     cashBack(cashBack_),
     tip(tip_),
     accountNumber(accountNumber_) {
-    std::cout << "Const " << *this << '\n';
+    std::cout << "Constructor card: \n" << *this << '\n';
 }
 
 
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << card.dataExpirare << " ";
-    os << card.cod << " ";
-    os << card.cvv;
-    os << " Owner: " << card.ownerName;
-    os << " Cash back: " << card.cashBack;
+    os << "Data de expirare: " << card.dataExpirare;
+    os << " Numarul cardului: " << card.cod;
+    os << " CVV: " << card.cvv;
+    os << " Detinator: " << card.ownerName;
+    os << " Cashback: " << card.cashBack;
     os << " Tip card: " << card.tip;
     os << " Numar cont: " << card.accountNumber;
     os << '\n';

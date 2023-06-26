@@ -20,20 +20,21 @@ Account::Account() : iban(generareIban()) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Account& account) {
-    os << "Account iban: " << account.iban << '\n';
+    os << "Iban cont: " << account.iban << '\n';
     if (account.currencyAccount.empty()) {
-        os << "Account has no currency accounts\n";
+        os << "Contul nu detine nicio valuta.\n";
     } else {
         for (auto it = account.currencyAccount.begin();
             it != account.currencyAccount.end(); ++it) {
-            os << "Account currency: " << stringCurrency[it->first] << " " << it->second << '\n';
+            os << "Sold curent: " << stringCurrency[it->first] << " " << it->second << '\n';
         }
     }
     if (account.carduri.empty()) {
-        os << "Account has no cards\n";
+        os << "Contul nu are carduri asociate.\n";
     } else {
+        os << "Contul detine urmatoarele carduri:\n";
         for (auto it = account.carduri.begin(); it != account.carduri.end(); ++it) {
-            os << "Account carduri: " << *it << '\n';
+            os << "Cardul: " << *it << '\n';
         }
     }
     account.print(os);

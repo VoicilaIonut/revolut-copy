@@ -22,8 +22,7 @@ User::User() = default;
 User::User(const std::string& nume_, const std::string& cnp_,
   const std::string& email_, const std::string& numarTelefon)
   : nume(nume_), cnp(cnp_), email(email_), numarTelefon(numarTelefon) {
-  std::cout << "User constructor\n"
-    << *this;
+  std::cout << "Constructor utilizator:\n" << *this << '\n';
 }
 
 User::User(const User& other)
@@ -33,7 +32,7 @@ User::User(const User& other)
   for (const auto& account : other.accounts) {
     accounts.emplace_back(account->clone());
   }
-  std::cout << "Constr de copiere" << *this << "\n";
+  std::cout << "Constructor de copiere.\n";
 }
 
 User& User::operator=(User other) {
@@ -55,14 +54,14 @@ void swap(User& user1, User& user2) {
 }
 
 std::ostream& operator<<(std::ostream& os, const User& user) {
-  os << "User name: " << user.nume << '\n';
+  os << "Nume utilizator: " << user.nume << '\n';
   // os << "User cnp: " << user.cnp << '\n';
   // os << "User email: " << user.email << '\n';
   // os << "User numar telefon: " << user.numarTelefon << '\n';
   if (user.accounts.empty()) {
-    os << "The user has no accounts\n";
+    os << "Utilizatorul nu detine conturi.\n";
   } else {
-    os << "User accounts: \n";
+    os << "Conturile utilizatorului: \n";
     for (auto account : user.accounts) {
       os << *account << '\n';
     }
@@ -71,7 +70,7 @@ std::ostream& operator<<(std::ostream& os, const User& user) {
 }
 
 User::~User() {
-  std::cout << "Destroing User " << nume << " with a number of " << accounts.size() << " accounts.\n";
+  std::cout << "Distrugere utilizator: " << nume << ", cu un numar de " << accounts.size() << " conturi detinute.\n";
 }
 
 void User::createAccount(const std::string& typeOfAccount) {
@@ -80,7 +79,7 @@ void User::createAccount(const std::string& typeOfAccount) {
   } else if (typeOfAccount == "Debit") {
     accounts.emplace_back(std::make_shared<DebitAccount>());
   } else {
-    std::cout << "TypeOfAccount not found\n";
+    std::cout << "Nu s-a gasit un tipul de cont specificat.\n";
   }
 }
 
