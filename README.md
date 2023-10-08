@@ -61,9 +61,3 @@ O incercare de server bancar cu o viitoare interfata pentru useri (in consola sa
 - [x] o clasă șablon cu sens; minim 2 instanțieri
 <!-- - [ ] o specializare pe funcție/clasă șablon -->
 - [x] tag de `git`: de exemplu `v0.3` sau `v1.0`
-
-## Resurse
-
-bard.google.com
-chatgpt
-stackoverflow
